@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UAL - Winter Festival Exhibition 24/25</title>
+  <link rel="stylesheet" href="/src/styles.css">
+</head>
+<body>
+  <!-- Landing Screen -->
+  <div id="landing-screen" data-state="landing">
+    <div class="landing-panel">
+      <h1 class="landing-title">University of the Arts London</h1>
+      <h2 class="landing-subtitle">Winter Festival Exhibition</h2>
+      <p class="landing-welcome">24/25</p>
+      <p class="landing-welcome">Welcome!</p>
+      <div class="pulse-dot"></div>
+      <p class="landing-prompt">Tap to enter</p>
+    </div>
+  </div>
+
+  <!-- Map Screen -->
+  <div id="map-screen" data-state="map" class="hidden">
+    <div id="map-view">
+      <div id="map-container">
+        <div id="map-inner">
+          <div id="map-image-layer"></div>
+          <svg id="map-overlay"></svg>
+        </div>
+      </div>
+      
+      <!-- Legend Panel -->
+      <div id="legend-panel">
+        <h3>Location Index;</h3>
+        <div class="legend-section">
+          <div class="legend-item entrance-item">
+            <span class="legend-marker entrance-marker"></span>
+            <span class="legend-text">Entrance</span>
+          </div>
+        </div>
+        <div class="legend-section">
+          <div id="students-list"></div>
+        </div>
+      </div>
+
+      <!-- Project Detail Panel -->
+      <div id="project-detail-panel" class="hidden">
+        <div class="detail-content">
+          <button id="close-detail" class="close-button">×</button>
+          <h2 id="detail-name"></h2>
+          <h3 id="detail-title"></h3>
+          <div id="detail-brief"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
+
