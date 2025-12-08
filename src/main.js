@@ -488,13 +488,26 @@ const STUDENTS_TABLET = STUDENTS_DESKTOP.map(student => ({
 
 // Mobile coordinates (iPhone 12 Pro) - TODO: Adjust these coordinates
 const ENTRANCE_MOBILE = {
-  x: 0.18,
-  y: 1.02
+  x: -0.015,
+  y: 1.04
 };
 
+// Calculate the transformation between desktop and mobile entrance
+// This will be applied to all student coordinates to maintain the same relationship
+const ENTRANCE_X_DIFF = ENTRANCE_MOBILE.x - ENTRANCE_DESKTOP.x; // -0.469
+const ENTRANCE_Y_DIFF = ENTRANCE_MOBILE.y - ENTRANCE_DESKTOP.y; // 0.36
+
+// Mobile students - apply the same transformation as entrance to all coordinates
 const STUDENTS_MOBILE = STUDENTS_DESKTOP.map(student => ({
   ...student,
-  path: student.path.map(p => ({ ...p }))
+  // Apply the same x, y offset/difference as the entrance
+  x: student.x + ENTRANCE_X_DIFF,
+  y: student.y + ENTRANCE_Y_DIFF,
+  path: student.path.map(point => ({
+    // Apply transformation to each path point
+    x: point.x + ENTRANCE_X_DIFF,
+    y: point.y + ENTRANCE_Y_DIFF
+  }))
 }));
 
 // Get current device coordinates
@@ -681,7 +694,7 @@ function renderEntranceMarker(width, height) {
   
   // Entrance circle - size varies by device
   const device = getDeviceType();
-  const entranceRadius = device === 'mobile' ? 5 : device === 'tablet' ? 4.5 : 4;
+  const entranceRadius = device === 'mobile' ? 3 : device === 'tablet' ? 4.5 : 4;
   
   const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   circle.setAttribute("class", `entrance-dot ${isActive ? "active" : ""}`);
@@ -734,7 +747,7 @@ function renderStudentMarker(student, width, height) {
   
   // Student dot - size varies by device
   const device = getDeviceType();
-  const studentRadius = device === 'mobile' ? 6 : device === 'tablet' ? 5.5 : 5;
+  const studentRadius = device === 'mobile' ? 3.5 : device === 'tablet' ? 5.5 : 5;
   
   const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   circle.setAttribute("class", `project-dot ${isActive ? "active" : ""}`);

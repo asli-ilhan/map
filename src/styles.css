@@ -139,12 +139,18 @@ body {
   align-items: center;
   justify-content: center;
   overflow: visible;
+  /* Constrain to max desktop size (2560x1600) */
+  max-width: 2560px;
+  max-height: 1600px;
+  margin: 0 auto;
 }
 
 #map-inner {
   position: relative;
   width: 100%;
   height: 100%;
+  max-width: 2560px;
+  max-height: 1600px;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -152,9 +158,14 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
+  /* Safari-compatible transform with vendor prefix */
+  -webkit-transform: translate(-50%, -50%) rotate(-90deg);
   transform: translate(-50%, -50%) rotate(-90deg);
-  width: 100vh;
-  height: 100vw;
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  /* Use min() to constrain to viewport or max size, whichever is smaller */
+  width: min(100vh, 1600px); /* After rotation, width becomes height */
+  height: min(100vw, 2560px); /* After rotation, height becomes width */
   background-image: url(/map.png);
   background-size: contain;
   background-position: center;
@@ -169,7 +180,11 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  /* Safari-compatible transform with vendor prefix */
+  -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
   z-index: 350;
 }
 
@@ -501,6 +516,25 @@ body {
   margin: 0 0 1rem 0;
 }
 
+/* Constrain map on very large screens (larger than 2560x1600) */
+/* This ensures the map, dots, and paths don't scale beyond desktop size */
+@media (min-width: 2561px) {
+  #map-container {
+    width: 2560px;
+    height: 1600px;
+  }
+  
+  #map-inner {
+    width: 2560px;
+    height: 1600px;
+  }
+  
+  #map-image-layer {
+    width: 1600px; /* Fixed size on very large screens */
+    height: 2560px; /* Fixed size on very large screens */
+  }
+}
+
 /* Desktop - MacBook Air and larger */
 @media (min-width: 1024px) {
   .landing-panel {
@@ -616,6 +650,37 @@ body {
 
   .landing-prompt {
     font-size: 0.9rem;
+  }
+
+  /* Map container adjustments for mobile */
+  #map-view {
+    overflow: visible; /* Allow dots outside viewport to be visible */
+  }
+
+  #map-container {
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: visible; /* Allow dots to be visible even if outside container */
+  }
+
+  #map-inner {
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: visible; /* Allow dots to be visible */
+  }
+
+  /* Map image layer - ensure it scales to fit mobile viewport */
+  #map-image-layer {
+    width: min(100vh, 100vw * 1.6); /* Scale to fit mobile, maintain aspect */
+    height: min(100vw, 100vh * 0.625); /* Scale to fit mobile */
+    /* Ensure image doesn't get cut off */
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* Overlay should match image layer and allow overflow */
+  #map-overlay {
+    overflow: visible; /* Allow dots outside to be visible */
   }
 
   #legend-panel {
