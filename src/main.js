@@ -592,6 +592,8 @@ function setupEventListeners() {
   window.addEventListener("resize", () => {
     if (currentState === "map") {
       renderMap();
+      // Force Safari transforms on resize
+      setTimeout(forceSafariTransforms, 100);
     }
   });
 
@@ -639,11 +641,39 @@ function loadMapImage() {
     mapImageLoaded = true;
     mapAspectRatio = img.naturalWidth / img.naturalHeight;
     renderMap();
+    // Force Safari to apply transforms
+    forceSafariTransforms();
   };
   
   img.onerror = () => {
     console.error("Failed to load map image. Please ensure /map.png exists in the public folder.");
   };
+}
+
+// Force Safari to apply CSS transforms (workaround for Safari transform issues)
+function forceSafariTransforms() {
+  // Detect Safari
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  
+  if (isSafari) {
+    // Force reflow to trigger transform application
+    void mapImageLayer.offsetHeight;
+    void mapOverlay.offsetHeight;
+    
+    // Explicitly set transform via JavaScript as fallback
+    const transformValue = 'translate(-50%, -50%) rotate(-90deg)';
+    mapImageLayer.style.webkitTransform = transformValue;
+    mapImageLayer.style.transform = transformValue;
+    mapOverlay.style.webkitTransform = transformValue;
+    mapOverlay.style.transform = transformValue;
+    
+    // Force a repaint
+    setTimeout(() => {
+      mapImageLayer.style.display = 'none';
+      void mapImageLayer.offsetHeight;
+      mapImageLayer.style.display = '';
+    }, 10);
+  }
 }
 
 // ============================================================================
@@ -684,6 +714,9 @@ function renderMap() {
     renderStudentPath(student, overlayWidth, overlayHeight);
     renderStudentMarker(student, overlayWidth, overlayHeight);
   });
+  
+  // Force Safari transforms after rendering
+  forceSafariTransforms();
 }
 
 function renderEntranceMarker(width, height) {
