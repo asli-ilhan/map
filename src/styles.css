@@ -229,12 +229,23 @@ body {
 
 /* SVG Elements */
 .project-dot {
-  fill: var(--color-accent-dark);
-  stroke: none;
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
   cursor: pointer;
   pointer-events: all;
   transition: transform 0.3s ease;
   animation: dotPulseOpacity 2s ease-in-out infinite;
+}
+
+.project-dot-number {
+  fill: var(--color-accent);
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 .project-dot:hover {
@@ -246,8 +257,12 @@ body {
   animation: none;
   opacity: 1;
   stroke: var(--color-fg);
-  stroke-width: 0.8;
+  stroke-width: 1.2;
   filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+}
+
+.project-dot.active + .project-dot-number {
+  fill: var(--color-fg);
 }
 
 @keyframes dotPulseOpacity {
@@ -440,19 +455,34 @@ body {
 }
 
 .legend-marker {
-  width: 10px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   margin-right: 0.5rem;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--color-accent);
+  background: transparent;
+  position: relative;
 }
 
 .entrance-marker {
   background: var(--color-accent);
+  border: none;
 }
 
 .student-marker {
-  background: var(--color-accent);
+  background: transparent;
+  border: 1.5px solid var(--color-accent);
+}
+
+.legend-number {
+  color: var(--color-accent);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .legend-text {

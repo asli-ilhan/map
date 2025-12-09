@@ -855,10 +855,11 @@ function renderMap() {
   // Render entrance marker
   renderEntranceMarker(overlayWidth, overlayHeight);
   
-  // Render student markers and paths
-  getStudents().forEach(student => {
+  // Render student markers and paths with numbers
+  const students = getStudents();
+  students.forEach((student, index) => {
     renderStudentPath(student, overlayWidth, overlayHeight);
-    renderStudentMarker(student, overlayWidth, overlayHeight);
+    renderStudentMarker(student, overlayWidth, overlayHeight, index + 1);
   });
   
   // Force transforms for non-Safari
@@ -919,7 +920,7 @@ function renderStudentPath(student, width, height) {
   mapOverlay.appendChild(path);
 }
 
-function renderStudentMarker(student, width, height) {
+function renderStudentMarker(student, width, height, number) {
   const pxX = student.x * width;
   const pxY = student.y * height;
   const isActive = activeStudentId === student.id;
@@ -940,6 +941,20 @@ function renderStudentMarker(student, width, height) {
   });
   
   mapOverlay.appendChild(circle);
+  
+  // Add number text inside the circle
+  const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  text.setAttribute("class", "project-dot-number");
+  text.setAttribute("x", pxX);
+  text.setAttribute("y", pxY);
+  text.textContent = number;
+  text.style.pointerEvents = "none";
+  // Adjust font size based on device (smaller sizes)
+  const fontSize = device === 'mobile' ? 5 : device === 'tablet' ? 6 : 7;
+  text.setAttribute("font-size", fontSize);
+  // Rotate text 90 degrees to the right (clockwise)
+  text.setAttribute("transform", `rotate(90 ${pxX} ${pxY})`);
+  mapOverlay.appendChild(text);
 }
 
 // ============================================================================
@@ -955,7 +970,8 @@ function renderLegend() {
   
   studentsList.innerHTML = "";
   
-  getStudents().forEach(student => {
+  const students = getStudents();
+  students.forEach((student, index) => {
     const item = document.createElement("div");
     item.className = `legend-item ${activeStudentId === student.id ? "active" : ""}`;
     item.setAttribute("data-student-id", student.id);
@@ -967,8 +983,11 @@ function renderLegend() {
       projectText = student.participants.map(p => p.name).join(", ");
     }
     
+    const number = index + 1;
     item.innerHTML = `
-      <span class="legend-marker student-marker"></span>
+      <span class="legend-marker student-marker">
+        <span class="legend-number">${number}</span>
+      </span>
       <span class="legend-text">
         <span class="student-name">${escapeHtml(student.name)}</span>
         <span class="student-project">${projectText}</span>
