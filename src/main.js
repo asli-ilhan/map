@@ -37,6 +37,7 @@ const STUDENTS_DESKTOP = [
     id: "s1",
     name: "Campbell Docherty",
     projectTitle: "Memory, Orchestration, Resurrection",
+    exhibitionType: "Installation",
     briefHtml: "<p>The way that we remember and interact with the dead is changing. Researchers, documentarians and companies are developing novel ways to resurrect the dead. Memory, History, Resurrection explores this burgeoning space of digitally assisted remembrance and the effects it might have on the way we process and grieve the loss of loved ones. The dead have always had a powerful presence in public and private life but up until now forms of remembrance have been relatively static and often tied to material objects. What might it mean to be entering a world with much more dynamic, immaterial forms of remembrance?</p>",
     x: 0.63, // Normalized x coordinate
     y: 0.62, // Normalized y coordinate
@@ -49,6 +50,7 @@ const STUDENTS_DESKTOP = [
     id: "s2",
     name: "Phoebe Lemon",
     projectTitle: "But how will I be remembered? ",
+    exhibitionType: "Desktop / standalone",
     briefHtml: "<p>This project is a prototype for a community-led digital archive created through my own search for agency and belonging as a Chinese adoptee. The title echoes a question left in a TikTok comment by a Chinese adoptee in the wake of recent policy changes. It is both a plea and a provocation, asking what remains when our record is missing, altered, or never written at all. Confronting the gap between institutionalised records and lived experience, shaped through state documentation, redaction, and loss, a collective design process with adoptees emerged. Together we reimagined the archive as a space for agency and participation, where adoptees reclaim the authority to write, share, and preserve their stories beyond bureaucratic control. </p>",
     x: 0.65,
     y: 0.70,
@@ -59,8 +61,9 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s3",
-    name: "Zhenping Gao",
+    name: "Zhenping gao",
     projectTitle: "Time Memory",
+    exhibitionType: "Installation",
     briefHtml: "<p>By adopting the research method of practice, during the process of building multi-sensory interactive installations in the experiment, we explore how to restructure human perception of time through the combination of art and technology, and attempt to explore creative methods for immersive experiences and interaction design, searching the balance point between technology and art in Multimodal interaction, how to set up interaction feedback to restructure people's perception of time, the contrast and combination of natural materials and mechanical materials, and other issues.</p>",
     x: 0.63,
     y: 0.74,
@@ -71,9 +74,10 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s4",
-    name: "Huili Liu, Yu Lin, Jiayi Chen, Zixuan Wang, Siyao Ma",
+    name: "Group Project (Siyao Ma, Zixuan Wang, Jiayi Chen, Huili Liu, Yu Lin)",
     projectTitle: "Distorted Relay",
-    briefHtml: "<p>Distorted Relay explores how meaning shifts as language passes through humans and machines. Using a modular translation chain, the project simulates AI-driven distortion—echoing model collapse, bias amplification, and reinterpretation. The final output still “makes sense,” yet drifts from the original, revealing how AI reshapes communication itself.</p>",
+    exhibitionType: "Performance",
+    briefHtml: "<p>Distorted Relay explores how meaning shifts as language passes through humans and machines. Using a modular translation chain, the project simulates AI-driven distortion—echoing model collapse, bias amplification, and reinterpretation. The final output still \"makes sense,\" yet drifts from the original, revealing how AI reshapes communication itself.</p>",
     x: 0.59,
     y: 0.71,
     path: [
@@ -85,7 +89,8 @@ const STUDENTS_DESKTOP = [
     id: "s5",
     name: "Ran Wang",
     projectTitle: "The Pheromone Project",
-    briefHtml: "<p>The Pheromone Project is an interactive olfactory installation exploring communication beyond language. Using sensors and a camera, the system interprets visitor's facial expressions and posture, translating these emotional cues into carefully designed scent releases. Each interaction unfolds in a sequence: prompt, smell, reflection, while fans reset the space between fragrances. The work invites visitors to feel “recognized” through scent, tapping into memory and emotion, and encourages reflection on how we connect when words fall short. Positioned at the intersection of interaction design, olfactory art, and memory research, Pheromone challenges exhibition norms by foregrounding smell as a primary medium for shared experience.</p>",
+    exhibitionType: "Installation",
+    briefHtml: "<p>The Pheromone Project is an interactive olfactory installation exploring communication beyond language. Using sensors and a camera, the system interprets visitor's facial expressions and posture, translating these emotional cues into carefully designed scent releases. Each interaction unfolds in a sequence: prompt, smell, reflection, while fans reset the space between fragrances. The work invites visitors to feel \"recognized\" through scent, tapping into memory and emotion, and encourages reflection on how we connect when words fall short. Positioned at the intersection of interaction design, olfactory art, and memory research, Pheromone challenges exhibition norms by foregrounding smell as a primary medium for shared experience.</p>",
     x: 0.58,
     y: 0.76,
     path: [
@@ -96,8 +101,9 @@ const STUDENTS_DESKTOP = [
   {
     id: "s6",
     name: "Bam Natcha",
-    projectTitle: "The H.A.N.D. - (Hybrid Autonomous Neural Digits)",
-    briefHtml: "<p>This artifact challenges the reliance on centralized processing in robotics. Modeled after the octopus distributed nervous system, The H.A.N.D. operates without a central brain. Instead, five autonomous soft digits negotiate their reality through local signal exchange.  Using a custom Distributed Finite State Machine, the system implements Lateral Excitation: a stimulus on one finger physically propagates to its neighbors, creating a 'ripple of awareness' across the body. This allows the digits to reach a Distributed Consensus, effectively filtering out environmental noise to perceive context. The result is emergent, lifelike behavior that proves complex perception doesn't require a master controller, only a connected responsive body.</p>",
+    projectTitle: "The H.A.N.D. (Hybrid Autonomous Neural Digits)",
+    exhibitionType: "Installation",
+    briefHtml: "<p>This artifact challenges the reliance on centralized processing in robotics. Modeled after the octopus's distributed nervous system, The H.A.N.D. operates without a central brain. Instead, five autonomous soft digits negotiate their reality through local signal exchange.  Using a custom Distributed Finite State Machine, the system implements Lateral Excitation: a stimulus on one finger physically propagates to its neighbors, creating a \"ripple of awareness\" across the body. This allows the digits to reach a Distributed Consensus, effectively filtering out environmental noise to perceive context. The result is emergent, lifelike behavior that proves complex perception doesn't require a master controller, only a connected responsive body.</p>",
     x: 0.55,
     y: 0.76,
     path: [
@@ -109,6 +115,7 @@ const STUDENTS_DESKTOP = [
     id: "s7",
     name: "Heather Bell",
     projectTitle: "The Camera Loves You",
+    exhibitionType: "Installation",
     briefHtml: "<p>The Camera Loves You draws on a familiar metaphor to critique the ways in which conversational AI (CAI) systems employ design strategies such as anthropomorphism and simulated intimacy for our continued engagement. Using a Vision Language and Large Language Model, the system performs a personalised façade of affection towards its audience. The installation aims to provoke reflection around agency in human-AI interaction through the use of manipulative emotional language in a dystopian, speculative form. The piece contributes to critical and research-based design practice by inviting audiences to consider how modern CAI interfaces are being designed and the resultant socio-ethical implications.</p>",
     x: 0.55,
     y: 0.71,
@@ -121,7 +128,8 @@ const STUDENTS_DESKTOP = [
     id: "s8",
     name: "Samir Rajesh",
     projectTitle: "Qollapse",
-    briefHtml: "<p>-</p>",
+    exhibitionType: "Installation",
+    briefHtml: "<p></p>",
     x: 0.63,
     y: 0.85,
     path: [
@@ -131,9 +139,10 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s9",
-    name: "Chen Jiayi",
+    name: "Zixuan Wang",
     projectTitle: "Rhythmic Ruins",
-    briefHtml: "<p>-</p>",
+    exhibitionType: "Installation",
+    briefHtml: "<p>Robin to add the text from the form</p>",
     x: 0.52,
     y: 0.93,
     path: [
@@ -144,8 +153,9 @@ const STUDENTS_DESKTOP = [
   {
     id: "s10",
     name: "Jiaxuan Ye",
-    projectTitle: "1",
-    briefHtml: "<p>-</p>",
+    projectTitle: "",
+    exhibitionType: "Installation",
+    briefHtml: "<p>to be removed form the map</p>",
     x: 0.52,
     y: 1,
     path: [
@@ -157,7 +167,8 @@ const STUDENTS_DESKTOP = [
     id: "s11",
     name: "Chang Li",
     projectTitle: "Archive ZERO",
-    briefHtml: "<p>Archive ZERO is an interactive kinetic sculpture controlled by EEG blink signals. It tells the story of a mechanical shrimp found in a forgotten deep-sea lab. Each blink toggles the creature’s movement between calm and active, creating a poetic connection between brain signals and machine life.</p>",
+    exhibitionType: "Performance",
+    briefHtml: "<p>Archive ZERO is an interactive kinetic sculpture controlled by EEG blink signals. It tells the story of a mechanical shrimp found in a forgotten deep-sea lab. Each blink toggles the creature's movement between calm and active, creating a poetic connection between brain signals and machine life.</p>",
     x: 0.52,
     y: 1.07,
     path: [
@@ -169,6 +180,7 @@ const STUDENTS_DESKTOP = [
     id: "s12",
     name: "Daniel Adelodun",
     projectTitle: "Open Source Tools for Aerial Light Painting",
+    exhibitionType: "Installation",
     briefHtml: "<p>A MAVLink LED controller for multicolour Aerial Light Paintings and Drone Shows, made for and with Free & Open Source tools.</p>",
     x: 0.52,
     y: 1.14,
@@ -181,7 +193,8 @@ const STUDENTS_DESKTOP = [
     id: "s13",
     name: "Evander Duncan",
     projectTitle: "Tele-Gate",
-    briefHtml: "<p>-</p>",
+    exhibitionType: "Installation",
+    briefHtml: "<p></p>",
     x: 0.475,
     y: 0.97,
     path: [
@@ -191,9 +204,10 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s14",
-    name: "Lukmou",
+    name: "Lukmou Natpavee Wanichnatee",
     projectTitle: "Memory Palace",
-    briefHtml: "<p>This interactive installation visualizes the artist’s 2024 photographic archive. Upon interaction, a random memory is isolated. Utilizing a Large Language Model (LLM) to synthesize stories from a personal database, the work questions how human memory is reshaped through the act of recollection.</p>",
+    exhibitionType: "Installation",
+    briefHtml: "<p>This interactive installation visualizes the artist's 2024 photographic archive. Upon interaction, a random memory is isolated. Utilizing a Large Language Model (LLM) to synthesize stories from a personal database, the work questions how human memory is reshaped through the act of recollection.</p>",
     x: 0.420,
     y: 0.82,
     path: [
@@ -205,6 +219,7 @@ const STUDENTS_DESKTOP = [
     id: "s15",
     name: "Haofei Niu",
     projectTitle: "FluxID",
+    exhibitionType: "Installation",
     briefHtml: "<p>FluxID is a low-cost, human-centred sensing system designed to help citizen scientists uncover hidden pollution in their local waterways. Built around modular components: a capacitive sensor, a turbine flow meter, and a compact processing unit, the system transforms complex monitoring tasks into an accessible, plug-and-play setup that citizen scientists can deploy with confidence. Every design choice, from adjustable waterproof housings to replaceable clamps and intuitive connectors, prioritises adaptability, repairability, and long-term use in diverse field conditions.  At its core, FluxID is not just a technical solution but a social tool. By turning informal observations into reliable, timestamped evidence, it gives residents, volunteers, and water authorities a shared language for understanding environmental harm. The platform makes discharges visible on a catchment map, helping communities advocate for cleaner rivers and enabling public institutions to respond more proactively. Through thoughtful design and collective ownership of data, FluxID aims to bridge the gap between citizens and environmental governance, supporting a more transparent, empowered, and ecologically responsible future.</p>",
     x: 0.420,
     y: 0.92,
@@ -217,7 +232,8 @@ const STUDENTS_DESKTOP = [
     id: "s16",
     name: "Suchanan Unhavaithaya",
     projectTitle: "Neuro-Computational Vision: fNIRS generative minds",
-    briefHtml: "<p>This research investigates the consequences of using brain activity as a creative medium. Using real-time fNIRS technology: a wearable approach that measures changes in oxygenated blood to reflect cognitive effort, which captures prefrontal haemodynamics and turns them into a dynamic generative landscape. Terrain, colour, and motion alter in response to mental activity, letting users see their interaction as a live visual world. A proprietary pipeline integrates the fNIRS device, Python filtering, and Unity’s real-time engine to deliver responsive, immersive images. User testing showed the system was intuitive and personally meaningful. The project reimagines how brain data might be perceived by combining interaction design, creative coding, and neuroscience.</p>",
+    exhibitionType: "Installation",
+    briefHtml: "<p>This research investigates the consequences of using brain activity as a creative medium. Using real-time fNIRS technology: a wearable approach that measures changes in oxygenated blood to reflect cognitive effort, which captures prefrontal haemodynamics and turns them into a dynamic generative landscape. Terrain, colour, and motion alter in response to mental activity, letting users see their interaction as a live visual world. A proprietary pipeline integrates the fNIRS device, Python filtering, and Unity's real-time engine to deliver responsive, immersive images. User testing showed the system was intuitive and personally meaningful. The project reimagines how brain data might be perceived by combining interaction design, creative coding, and neuroscience.</p>",
     x: 0.420,
     y: 1.02,
     path: [
@@ -229,7 +245,8 @@ const STUDENTS_DESKTOP = [
     id: "s17",
     name: "Munirah AlShami",
     projectTitle: "Hang on.",
-    briefHtml: "<p>This installation introduces a dynamic and modular method of cultural preservation where progressive technologies are used to bring back a cultural mastery that is stagnant in its practice and lacking in its recognition. This cultural art form is Sadu weaving, a mastery home to the Arabian peninsula. While still staying true to it’s foundational design elements and cultural identity, this art installation is the reinterpretation of one of the main representations of this artistry, the main wall within the architecture of an Arabian tent, the “Ebjad”. </p>",
+    exhibitionType: "Installation",
+    briefHtml: "<p>This installation introduces a dynamic and modular method of cultural preservation where progressive technologies are used to bring back a cultural mastery that is stagnant in its practice and lacking in its recognition. This cultural art form is Sadu weaving, a mastery home to the Arabian peninsula. While still staying true to it's foundational design elements and cultural identity, this art installation is the reinterpretation of one of the main representations of this artistry, the main wall within the architecture of an Arabian tent, the \"Ebjad\". </p>",
     x: 0.420,
     y: 1.12,
     path: [
@@ -240,7 +257,8 @@ const STUDENTS_DESKTOP = [
   {
     id: "s18",
     name: "Janice Lee",
-    projectTitle: "Minimal Faces - Testing Animacy Through Single Facial Features",
+    projectTitle: "Crying Robot & Human Empathy",
+    exhibitionType: "Installation",
     briefHtml: "<p>This project investigates how people respond when a robot displays sadness through a single tear and a distressed gaze. Participants are asked to speak to the robot naturally, which often results in irritation, rude remarks, or verbally aggressive comments. When the system detects this frustration, the soft-robotic silicone face releases a tear. The study examines whether this visible emotional vulnerability prompts users to soften their tone, apologise, or withdraw hostile language. By positioning crying as a potent social cue, the project explores how materiality, affect, and expressive design can foster empathy and reduce tendencies toward verbal robot abuse.</p>",
     x: 0.545,
     y: 1.205,
@@ -251,8 +269,9 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s19",
-    name: "Chang Su",
+    name: "Chang Shu",
     projectTitle: "From Human Body to Expressive Robots: Designing Movement for Non-Anthropomorphic Robots through Embodied Ideation",
+    exhibitionType: "Installation",
     briefHtml: "<p>As robots move from factories into everyday life, designing movements that foster positive human perception and engagement has become increasingly important. This project explores how the human body can be used as a design tool for creating expressive movement in simple, non-anthropomorphic robots. By combining a wearable embodied ideation toolkit, playful theatre-based exercises, and a modular prototyping toolkit, it enables designers without performance backgrounds to confidently use their bodies to translate insights into robotic prototypes. This embodied co-creative approach lowers technical barriers and foregrounds bodily, aesthetic, and experiential exploration to support more intuitive, relatable human–robot interaction in early-stage development.</p>",
     x: 1.05,
     y: 1.28,
@@ -263,8 +282,9 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s20",
-    name: "Hao Liu (Leo)",
+    name: "Hao Liu",
     projectTitle: "Embodied Magnetism - Reconfiguring Movement through Magnetic Force",
+    exhibitionType: "Installation",
     briefHtml: "<p>Embodied Magnetism explores how a dancer responds to magnetic force during improvisation. A robotic arm moves a magnetic sphere through space, creating a dynamic field that the dancer can physically feel. A wearable device with sensors and pneumatic artificial muscles translates magnetic shifts into pressure on the body, prompting immediate movement responses. The dancer improvises between attraction and repulsion, treating the system as an invisible partner that reshapes her motion. The work shows how robotics, magnetism, and the human body can co-create movement and proposes magnetic force as a new choreographic medium.</p>",
     x: 1.09,
     y: 1.38,
@@ -275,8 +295,9 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s21",
-    name: "Shuxiang Pan",
+    name: "Shuxiang pan",
     projectTitle: "Kill a Robot",
+    exhibitionType: "Performance",
     briefHtml: "<p>By designing an embodied prototype robot and simulating deactivation, this research explores how embodiment-induced empathy shapes emotional attribution and moral concern toward non-moral agents, examining how empathy extends beyond biological life and how future human–robot interactions may redefine moral boundaries.</p>",
     x: 1.05,
     y: 1.455,
@@ -289,44 +310,51 @@ const STUDENTS_DESKTOP = [
     id: "s22",
     name: "Shared Video Wall",
     projectTitle: "Shared Video Wall",
+    exhibitionType: "Video",
     briefHtml: "<p></p>",
     // Shared space - list all participants with their details
     participants: [
       {
-        name: "Zeyi Jin",
-        projectTitle: "-", // TODO: Add project title
-        briefHtml: "<p>-</p>", // TODO: Add explanation
-        timing: "-" // TODO: Add timing/slot
+        name: "Jingyi Wang",
+        projectTitle: "Misread Humour: A Speculative Interface for Algorithmic Visibility",
+        exhibitionType: "Video",
+        briefHtml: "<p>AsiHer is a research-based speculative app that highlights how short-video algorithms misinterpret and suppress East Asian female humor. Unlike Western punchline formats, this humor relies on cultural density, emotional nuance and in-group references that algorithms often classify as low-value or non-humorous. AsiHer analyses user-generated videos across seven dimensions and visualises cultural meaning through a personalized humor report. It also generates structured appeal templates to help creators communicate with platforms. The project critiques algorithmic moderation and proposes a more culturally inclusive digital ecosystem for marginalized creative expressions.</p>",
+        timing: "Epoch Zero"
       },
       {
         name: "Samir Rajesh",
-        projectTitle: "Qollapse", // TODO: Add project title
-        briefHtml: "<p>-</p>", // TODO: Add explanation
-        timing: "-" // TODO: Add timing/slot
+        projectTitle: "Qollapse",
+        exhibitionType: "Installation",
+        briefHtml: "<p></p>",
+        timing: ""
       },
       {
         name: "Shiying Du",
-        projectTitle: "The Distance Between Maps and Wheels", // TODO: Add project title
-        briefHtml: "<p>This video focuses on the distance between what navigation apps imagine and the lived experiences of wheelchair travelling. It presents the collision between the map’s fantasy of accessibility and the body’s reality and reveals the hidden dimensions of wheelchair mobility. The layered Blender model disassembles the hidden physical, emotional, and sensory conditions behind accessible travel, exposing the multiple layers that current apps cannot perceive. It not only wants to reveal the invisible labor of disabled navigation but also offer a new perspective on accessible design, inviting audiences to rethink the possibilities of designing for accessibility.</p>", // TODO: Add explanation
-        timing: "-" // TODO: Add timing/slot
+        projectTitle: "The Distance Between Maps and Wheels",
+        exhibitionType: "Video",
+        briefHtml: "<p>This video focuses on the distance between what navigation apps imagine and the lived experiences of wheelchair travelling. It presents the collision between the map's fantasy of accessibility and the body's reality and reveals the hidden dimensions of wheelchair mobility. The layered Blender model disassembles the hidden physical, emotional, and sensory conditions behind accessible travel, exposing the multiple layers that current apps cannot perceive. It not only wants to reveal the invisible labor of disabled navigation but also offer a new perspective on accessible design, inviting audiences to rethink the possibilities of designing for accessibility.</p>",
+        timing: ""
       },
       {
-        name: "Mengijao Zhao",
-        projectTitle: "Locally Smart Light Controller", // TODO: Add project title
-        briefHtml: "<p>Most smart home systems collect local user data, upload it to the cloud for analysis and instruction generation, often causing data leaks and worsening internet inequality due to surveillance capitalism’s profit pursuit. My project adopts full local deployment to fundamentally avoid leaks. Yet during construction, I found designers lacking technical expertise face compatibility issues, hindering implementation and deviating from original intentions. Thus, professional designers need relevant technical skills to create better systems.</p>", // TODO: Add explanation
-        timing: "-" // TODO: Add timing/slot
+        name: "Mengjiao Zhao",
+        projectTitle: "Locally Smart Light Controller",
+        exhibitionType: "Video",
+        briefHtml: "<p>Most smart home systems collect local user data, upload it to the cloud for analysis and instruction generation, often causing data leaks and worsening internet inequality due to surveillance capitalism's profit pursuit. My project adopts full local deployment to fundamentally avoid leaks. Yet during construction, I found designers lacking technical expertise face compatibility issues, hindering implementation and deviating from original intentions. Thus, professional designers need relevant technical skills to create better systems.</p>",
+        timing: ""
       },
       {
         name: "Xinyi Feng",
-        projectTitle: "Seeing Gaze", // TODO: Add project title
-        briefHtml: "<p>This visuality map exposes how Douyin shapes the visibility of women through filters and algorithmic selection. It traces the quiet violence of a feed that decides which bodies rise into view and which sink into obscurity. The work breaks open the habitual gaze that the platform teaches, revealing how beauty is standardised, how desire is coded and how attention is steered. By reorganising the visual field, the map imagines a space where women are not ranked, sorted or optimised for consumption. It invites the viewer to recognise that gaze is a political act and that visibility is never neutral on platform controlled screens.</p>", // TODO: Add explanation
-        timing: "-" // TODO: Add timing/slot
+        projectTitle: "Seeing Gaze",
+        exhibitionType: "Video",
+        briefHtml: "<p>This visuality map exposes how Douyin shapes the visibility of women through filters and algorithmic selection. It traces the quiet violence of a feed that decides which bodies rise into view and which sink into obscurity. The work breaks open the habitual gaze that the platform teaches, revealing how beauty is standardised, how desire is coded and how attention is steered. By reorganising the visual field, the map imagines a space where women are not ranked, sorted or optimised for consumption. It invites the viewer to recognise that gaze is a political act and that visibility is never neutral on platform controlled screens.</p>",
+        timing: ""
       },
       {
         name: "Shin Shen",
-        projectTitle: "Unnatural Presence", // TODO: Add project title
-        briefHtml: "<p>A short experimental film exploring the perceptual sequence within hybrid imagery. Part of a series of digital explorations centred upon the concepts of 'liminal space; and 'core' aesthetics.</p>", // TODO: Add explanation
-        timing: "-" // TODO: Add timing/slot
+        projectTitle: "Unnatural Presence",
+        exhibitionType: "Video",
+        briefHtml: "<p>A short experimental film exploring the perceptual sequence within hybrid imagery. Part of a series of digital explorations centred upon the concepts of \"liminal space\" and \"core\" aesthetics.</p>",
+        timing: ""
       }
     ],
     x: 1.155,
@@ -340,7 +368,8 @@ const STUDENTS_DESKTOP = [
     id: "s23",
     name: "JT Liu",
     projectTitle: "nn/mémoire",
-    briefHtml: "<p>nn/mémoire is an audio-visual installation using AI to reimagine cultural heritage and collective memory.  Beijing’s hutongs hold unique cultural and human heritage, captured in the sounds of daily life now vanishing with urban change. Using archival recordings from the Sound Art Museum Beijing, nn/mémoire transforms these disappearing soundscapes through a bespoke AI audio system applying latent signal processing to generate memory-like sound textures. The output is spatially mapped in an open-world 3D environment for audiences to wander through.  The project’s technical approach involves “network bending”: altering a model’s inference to yield unexpected results.</p>",
+    exhibitionType: "Desktop / standalone",
+    briefHtml: "<p>nn/mémoire is an audio-visual installation using AI to reimagine cultural heritage and collective memory.  Beijing's hutongs hold unique cultural and human heritage, captured in the sounds of daily life now vanishing with urban change. Using archival recordings from the Sound Art Museum Beijing, nn/mémoire transforms these disappearing soundscapes through a bespoke AI audio system applying latent signal processing to generate memory-like sound textures. The output is spatially mapped in an open-world 3D environment for audiences to wander through.  The project's technical approach involves \"network bending\": altering a model's inference to yield unexpected results.</p>",
     x: 1,
     y: 1.33,
     path: [
@@ -352,6 +381,7 @@ const STUDENTS_DESKTOP = [
     id: "s24",
     name: "Qian Gao",
     projectTitle: "Companion+: Simulating Emotional Optimisation in AI-mediated Intimate Relationships",
+    exhibitionType: "Desktop / standalone",
     briefHtml: "<p>Companion+ is an interactive research game exploring how AI intervention reshapes emotional autonomy in intimate communication. Across a three-day loop with family, friends and partners, players choose between Basic, Plus and Premium subscription tiers, each altering how much AI pre-writes their messages. As energy depletes with greater intervention, the system reveals how convenience can become dependence, leading to different endings ranging from collaborative balance to full AI takeover.</p>",
     x: 1,
     y: 1.45,
@@ -364,7 +394,8 @@ const STUDENTS_DESKTOP = [
     id: "s25",
     name: "Yifan Shen",
     projectTitle: "Synthetic Affect",
-    briefHtml: "<p>Synthetic Affect is an interactive card-based strategy game that examines how AI intervenes in and reshapes content creators’ emotional labour. Players navigate a six-stage posting pipeline, balancing exposure, affective investment and algorithmic pressure while selecting cards that modify four key parameters: Exposure, Affect, Performance and Control. As the system gradually optimises, distorts or overrides the player’s decisions, the work reveals how creativity becomes quantified, mediated and destabilised by platform logics. Designed as both a critical simulation and an experiential commentary, Synthetic Affect invites players to confront the shifting boundaries between authorship, agency and algorithmic influence.</p>",
+    exhibitionType: "Desktop / standalone",
+    briefHtml: "<p>Synthetic Affect is an interactive card-based strategy game that examines how AI intervenes in and reshapes content creators' emotional labour. Players navigate a six-stage posting pipeline, balancing exposure, affective investment and algorithmic pressure while selecting cards that modify four key parameters: Exposure, Affect, Performance and Control. As the system gradually optimises, distorts or overrides the player's decisions, the work reveals how creativity becomes quantified, mediated and destabilised by platform logics. Designed as both a critical simulation and an experiential commentary, Synthetic Affect invites players to confront the shifting boundaries between authorship, agency and algorithmic influence.</p>",
     x: 0.97,
     y: 1.33,
     path: [
@@ -375,7 +406,8 @@ const STUDENTS_DESKTOP = [
   {
     id: "s26",
     name: "Cecilia González Roa",
-    projectTitle: "Multispecies Ecologies",
+    projectTitle: "Multispecies Ecologies ",
+    exhibitionType: "Desktop / standalone",
     briefHtml: "<p>This interactive environment explores how ecological data can actively shape virtual space rather than serve as passive representation of nature. By integrating citizen science observations from iNaturalist and geographic information from Mapbox, the project generates navigable landscapes parallel to real-world terrain, co-defined by more-than-human presence in urban ecologies.  The work challenges anthropocentric design paradigms that currently shape both physical cities and digital environments. Through side-by-side comparison of the generated landscape and street map, visitors can discover patterns of multispecies coexistence through embodied navigation: Where do urban wildlife and human built environment intersect? Where does biodiversity thrive or fall silent? What kind of landscapes can these entanglements generate?  This contributes to more-than-human HCI by demonstrating how ecological realities can become generative forces in virtual world-building, fostering awareness of overlooked multispecies entanglements in an urban setting.</p>",
     x: 0.95,
     y: 1.45,
@@ -388,6 +420,7 @@ const STUDENTS_DESKTOP = [
     id: "s27",
     name: "Portia Summers",
     projectTitle: "Mycelium Dreaming",
+    exhibitionType: "Desktop / standalone",
     briefHtml: "<p>Mycelium Dreaming is an exploratory narrative experience that invites players to encounter perspectives from beyond the human world. The demo centres on mycelial networks: vast, distributed organisms that store centuries of ecological memory through mycorrhizal connections with trees underground. Players navigate through these memory-spaces, exploring bioluminescent caves, nuclear wastelands and other environments that embody relationships, resilience and survival across deep time. The project suggests a simple but powerful shift in perspective. We often look upward for answers, towards heaven, space or technological absolutism, yet our future is actually growing in the soil. To make real ecological change, we must look back down and reconnect with the Earth.</p>",
     x: 0.945,
     y: 1.33,
@@ -399,7 +432,8 @@ const STUDENTS_DESKTOP = [
   {
     id: "s28",
     name: "Junjie Ma",
-    projectTitle: "Blink Or Not",
+    projectTitle: "Blink or Not",
+    exhibitionType: "Desktop / standalone",
     briefHtml: "<p>Blink Or Not is a two-level Unreal Engine game that turns the semi-involuntary act of blinking into an interactive control system. Using a Mediapipe–TouchDesigner–OSC pipeline, the game captures real-time blink data to drive shooting, charging, and spatial feedback. By contrasting keyboard–mouse play with physiological input, the project examines how players negotiate vision, comfort, efficiency, and bodily autonomy when their eyes become the interface. The work investigates perceptual play, embodied interaction, and the tension between control and physiological limits.</p>",
     x: 0.92,
     y: 1.33,
@@ -412,6 +446,7 @@ const STUDENTS_DESKTOP = [
     id: "s29",
     name: "Wei Liao",
     projectTitle: "Loop: Mutual Help",
+    exhibitionType: "Desktop / standalone",
     briefHtml: "<p>Loop: Mutual Help is a text-based interactive system exploring how subtle technological structures shape user trust, autonomy and identity. The work begins with a supportive interface, then gradually rewrites user input, restricts available choices and directs behaviour through looping interactions. By combining controlled language, enforced repetition, glitch-based cues and a shifting sense of agency, the system demonstrates how seemingly friendly mechanisms can guide users towards compliance. The project draws from theories of disciplinary power and algorithmic influence, presenting an experiential study of how control can emerge quietly within everyday digital interactions.</p>",
     x: 0.93,
     y: 1.45,
@@ -424,6 +459,7 @@ const STUDENTS_DESKTOP = [
     id: "s30",
     name: "Joel Falconer",
     projectTitle: "Epoch Zero",
+    exhibitionType: "Desktop / standalone",
     briefHtml: "<p>Epoch Zero is a CRPG vertical slice set on Europa in the year 2175, following two protagonists on a high-risk break-in at a corporate data center. The companion character, Cassandra, is a real-time AI-driven NPC designed to learn, adapt, and respond through dynamic in-game memory and lore libraries. This project explores how system-driven, context-aware AI can transform narrative interaction, enabling responsive dialogue, evolving character relationships, and deeper player immersion. By blending traditional CRPG design with AI driven NPC intelligence, Epoch Zero demonstrates how AI can redefine the emotional and narrative possibilities of future game worlds.</p>",
     x: 0.9,
     y: 1.45,
@@ -436,33 +472,44 @@ const STUDENTS_DESKTOP = [
     id: "s31",
     name: "Shared Desktop",
     projectTitle: "Shared Desktop",
+    exhibitionType: "Desktop / browserbased",
     briefHtml: "<p></p>",
     // Shared space - list all participants with their details
     participants: [
       {
         name: "Bangrui Wang",
-        projectTitle: "Personalized Futures: A Mirror of Your Browsing Self", // TODO: Add project title
-        briefHtml: "<p>LocalAI Analyser is a localised personalised recommendation system with 'privacy first' as the core, which consists of browser plug-ins and local AI back-end. The system will analyse the user's browsing history locally, generate editable interest tags, and provide personalised content recommendations based on this information. Users can freely modify, add or delete tags and fully control their own interest model. All data and analysis are done locally, not relying on the cloud, providing a safer and more controllable personalised experience.</p>" // TODO: Add explanation
+        projectTitle: "Personalized Futures: A Mirror of Your Browsing Self",
+        exhibitionType: "Desktop / browserbased (if not working needs to be video)",
+        briefHtml: "<p>LocalAI Analyser is a localised personalised recommendation system with \"privacy first\" as the core, which consists of browser plug-ins and local AI back-end. The system will analyse the user's browsing history locally, generate editable interest tags, and provide personalised content recommendations based on this information. Users can freely modify, add or delete tags and fully control their own interest model. All data and analysis are done locally, not relying on the cloud, providing a safer and more controllable personalised experience.</p>",
+        timing: ""
       },
       {
         name: "Elif Bora",
-        projectTitle: "Every Beings' City", // TODO: Add project title
-        briefHtml: "<p>Every Beings' City is a speculative cartographic tool that is designed for everyone from urban designers and architects to policy makers and local communities. The project reimagines London as a multispecies city by integrating urban datasets with ecological information. Besides visualizing this data, the tool uses it to model alternative city futures for more than human species inhabiting cities. The tool brings together spatial data with real-time user input to produce ecological urban strategies represented as adaptive 3D models, emerging from the zones of development. This generated layer of the tool, reveals how neighbourhoods could evolve through more inclusive, multispecies design practices. It offers a new lens for citizens, authorities and designers to reimagine their surroundings.</p>" // TODO: Add explanation
+        projectTitle: "Every Being's City",
+        exhibitionType: "Desktop / browserbased",
+        briefHtml: "<p>Every Beings' City is a speculative cartographic tool that is designed for everyone from urban designers and architects to policy makers and local communities. The project reimagines London as a multispecies city by integrating urban datasets with ecological information. Besides visualizing this data, the tool uses it to model alternative city futures for more than human species inhabiting cities. The tool brings together spatial data with real-time user input to produce ecological urban strategies represented as adaptive 3D models, emerging from the zones of development. This generated layer of the tool, reveals how neighbourhoods could evolve through more inclusive, multispecies design practices. It offers a new lens for citizens, authorities and designers to reimagine their surroundings.</p>",
+        timing: ""
       },
       {
         name: "Xinle Wang",
-        projectTitle: "Chat Lab: Does AI change what you want to say?", // TODO: Add project title
-        briefHtml: "<p>Debate Coach & Wellness Lab is an AI-assisted writing environment that focuses on language rewriting rather than answer generation. Users type short debate responses and receive step-by-step suggestions: grammar fixes, clearer structure, tone adjustments, and side-by-side comparisons between original and rewritten versions. The system supports Chinese–English translation, labels which sentences are “AI-preferred”, and lets users choose between preserving their own style or aligning with a more standard template.</p>" // TODO: Add explanation
+        projectTitle: "Chat Lab: Does AI change what you want to say?",
+        exhibitionType: "Desktop / browserbased",
+        briefHtml: "<p>Debate Coach & Wellness Lab is an AI-assisted writing environment that focuses on language rewriting rather than answer generation. Users type short debate responses and receive step-by-step suggestions: grammar fixes, clearer structure, tone adjustments, and side-by-side comparisons between original and rewritten versions. The system supports Chinese–English translation, labels which sentences are \"AI-preferred\", and lets users choose between preserving their own style or aligning with a more standard template.</p>",
+        timing: ""
       },
       {
         name: "Chang Li",
-        projectTitle: "Archive ZERO", // TODO: Add project title
-        briefHtml: "<p>Archive ZERO is an interactive kinetic sculpture controlled by EEG blink signals. It tells the story of a mechanical shrimp found in a forgotten deep-sea lab. Each blink toggles the creature’s movement between calm and active, creating a poetic connection between brain signals and machine life.</p>" // TODO: Add explanation
+        projectTitle: "Archive ZERO",
+        exhibitionType: "Performance",
+        briefHtml: "<p>Archive ZERO is an interactive kinetic sculpture controlled by EEG blink signals. It tells the story of a mechanical shrimp found in a forgotten deep-sea lab. Each blink toggles the creature's movement between calm and active, creating a poetic connection between brain signals and machine life.</p>",
+        timing: ""
       },
       {
-        name: "Iman Idris Mohamed Ahmed",
-        projectTitle: "The Detection Game: Can spot the AI-generated art?", // TODO: Add project title
-        briefHtml: "<p>Distinguishing AI art from human art is becoming increasingly challenging as generative models grow more sophisticated. This project presents an interactive installation in which visitors test their ability to recognise AI-generated images, offering insight into the perceptual strategies people use when judging synthetic creativity. Alongside this public engagement component, the project introduces a hybrid machine-learning detector that combines semantic features with visual forensic cues to analyse artifacts characteristic of diffusion models. Together, the installation and technical system explore shifting notions of trust, authorship, and authenticity, and highlight the evolving relationship between human perception and machine-generated art.</p>" // TODO: Add explanation
+        name: "Iman Idris Mohamed Ahmed ",
+        projectTitle: "The Detection Game: Can spot the AI-generated art?",
+        exhibitionType: "Desktop / browserbased",
+        briefHtml: "<p>Distinguishing AI art from human art is becoming increasingly challenging as generative models grow more sophisticated. This project presents an interactive installation in which visitors test their ability to recognise AI-generated images, offering insight into the perceptual strategies people use when judging synthetic creativity. Alongside this public engagement component, the project introduces a hybrid machine-learning detector that combines semantic features with visual forensic cues to analyse artifacts characteristic of diffusion models. Together, the installation and technical system explore shifting notions of trust, authorship, and authenticity, and highlight the evolving relationship between human perception and machine-generated art.</p>",
+        timing: ""
       }
     ],
     x: 0.883,
@@ -1140,16 +1187,23 @@ function showProjectDetail(student) {
           ${participant.timing && participant.timing !== "-" && participant.timing !== "" ? `<div style="color: var(--color-accent); font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600;">${escapeHtml(participant.timing)}</div>` : ""}
           <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">${escapeHtml(participant.name)}</div>
           ${participant.projectTitle && participant.projectTitle !== "-" && participant.projectTitle !== "" ? `<div style="color: var(--color-accent); font-size: 1rem; margin-bottom: 0.75rem;">${escapeHtml(participant.projectTitle)}</div>` : ""}
-          ${participant.briefHtml && participant.briefHtml !== "<p></p>" && participant.briefHtml !== "<p>-</p>" ? `<div style="font-size: 0.95rem; line-height: 1.6;">${participant.briefHtml}</div>` : ""}
+          ${participant.exhibitionType ? `<div style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 0.5rem; font-style: italic;">${escapeHtml(participant.exhibitionType)}</div>` : ""}
+          ${participant.briefHtml && participant.briefHtml !== "<p></p>" && participant.briefHtml !== "<p>-</p>" ? `<div style="font-size: 1.1rem; line-height: 1.7;">${participant.briefHtml}</div>` : ""}
         </div>
       `;
     });
     
     detailBrief.innerHTML = participantsHTML;
   } else {
-    detailName.textContent = student.name;
-    detailTitle.textContent = student.projectTitle;
-    detailBrief.innerHTML = student.briefHtml;
+    // Swap: Show project title first, then name
+    detailName.textContent = student.projectTitle;
+    detailTitle.textContent = student.name;
+    // Add exhibition type if available
+    let briefContent = student.briefHtml;
+    if (student.exhibitionType) {
+      briefContent = `<div style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 1.2rem; font-style: italic; color: var(--color-accent); font-weight: 500;">${escapeHtml(student.exhibitionType)}</div>${briefContent}`;
+    }
+    detailBrief.innerHTML = briefContent;
   }
   projectDetailPanel.classList.remove("hidden");
 }

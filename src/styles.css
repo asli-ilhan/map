@@ -96,6 +96,13 @@ body {
   animation: fade 2s ease-in-out infinite;
 }
 
+.landing-note {
+  font-size: 0.75rem;
+  margin-top: 2rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+}
+
 @keyframes fade {
   0%, 100% {
     opacity: 0.7;
@@ -525,27 +532,34 @@ body {
 }
 
 #detail-name {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.8rem;
-  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: var(--color-fg);
 }
 
 #detail-title {
-  margin: 0 0 1.5rem 0;
-  font-size: 1.3rem;
-  font-weight: 400;
+  margin: 0 0 1.2rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
   color: var(--color-accent);
 }
 
 #detail-brief {
   color: var(--color-fg);
-  line-height: 1.6;
-  font-size: 1rem;
+  line-height: 1.8;
+  font-size: 1.15rem;
 }
 
 #detail-brief p {
   margin: 0 0 1rem 0;
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+#detail-brief div {
+  font-size: 1.15rem;
+  line-height: 1.8;
 }
 
 /* Constrain map on very large screens (larger than 2560x1600) */
