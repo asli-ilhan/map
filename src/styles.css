@@ -163,6 +163,35 @@ body {
   margin: 0 auto;
 }
 
+
+#map-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Transform applied to map-inner, so SVG doesn't need rotation here */
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  /* Use min() to constrain to viewport or max size, whichever is smaller */
+  /* After rotation (on map-inner), width becomes height */
+  width: min(100vh, 1600px);
+  height: min(100vw, 2560px);
+  max-width: 1600px;
+  max-height: 2560px;
+  pointer-events: none;
+  /* Force hardware acceleration */
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Apply rotation to map-inner (which contains the SVG) */
 #map-inner {
   position: relative;
   width: 100%;
@@ -171,67 +200,18 @@ body {
   max-height: 1600px;
   -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Force hardware acceleration for Safari */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: transform;
-}
-
-#map-image-layer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  /* Safari-compatible transform with vendor prefix */
-  -webkit-transform: translate(-50%, -50%) rotate(-90deg);
-  -moz-transform: translate(-50%, -50%) rotate(-90deg);
-  -ms-transform: translate(-50%, -50%) rotate(-90deg);
-  transform: translate(-50%, -50%) rotate(-90deg);
+  /* Rotate the entire inner container -90deg */
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
   -webkit-transform-origin: 50% 50%;
   -moz-transform-origin: 50% 50%;
   -ms-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
-  /* Use min() to constrain to viewport or max size, whichever is smaller */
-  width: min(100vh, 1600px); /* After rotation, width becomes height */
-  height: min(100vw, 2560px); /* After rotation, height becomes width */
-  background-image: url(/map.png);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: var(--color-bg);
   /* Force hardware acceleration for Safari */
   -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
   backface-visibility: hidden;
-  -webkit-perspective: 1000px;
-  perspective: 1000px;
-  will-change: transform;
-}
-
-/* Safari-specific styles are applied via JavaScript in applySafariStyles() */
-
-#map-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  /* Safari-compatible transform - MUST match image layer exactly */
-  -webkit-transform: translate(-50%, -50%) rotate(-90deg);
-  -moz-transform: translate(-50%, -50%) rotate(-90deg);
-  -ms-transform: translate(-50%, -50%) rotate(-90deg);
-  transform: translate(-50%, -50%) rotate(-90deg);
-  -webkit-transform-origin: 50% 50%;
-  -moz-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  transform-origin: 50% 50%;
-  z-index: 350;
-  /* Force hardware acceleration for Safari */
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-perspective: 1000px;
-  perspective: 1000px;
   will-change: transform;
 }
 
@@ -242,13 +222,12 @@ body {
   stroke-width: 1.5;
   cursor: pointer;
   pointer-events: all;
-  transition: transform 0.3s ease;
-  animation: dotPulseOpacity 2s ease-in-out infinite;
+  /* Removed hover animation and pulse animation */
 }
 
 .project-dot-number {
   fill: var(--color-accent);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   text-anchor: middle;
   dominant-baseline: central;
@@ -256,21 +235,19 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
 }
 
-.project-dot:hover {
-  transform: scale(1.2);
-  animation: none;
-}
-
 .project-dot.active {
   animation: none;
   opacity: 1;
+  fill: rgba(255, 255, 255, 0.2);
   stroke: var(--color-fg);
-  stroke-width: 1.2;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+  stroke-width: 3;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
 }
 
 .project-dot.active + .project-dot-number {
   fill: var(--color-fg);
+  font-weight: 700;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
 }
 
 @keyframes dotPulseOpacity {
@@ -296,59 +273,60 @@ body {
 .entrance-dot {
   fill: var(--color-accent-dark);
   stroke: none;
-  transition: transform 0.3s ease;
-  animation: dotPulseOpacity 2s ease-in-out infinite;
-}
-
-.entrance-dot:hover {
-  transform: scale(1.2);
-  animation: none;
+  /* Removed hover animation and pulse animation */
 }
 
 .entrance-dot.active {
   animation: none;
   opacity: 1;
+  fill: rgba(255, 255, 255, 0.2);
   stroke: var(--color-fg);
-  stroke-width: 0.8;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+  stroke-width: 3;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
 }
 
 /* Desktop - dots styling */
 @media (min-width: 1024px) {
   .project-dot.active {
-    stroke-width: 1;
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+    fill: rgba(255, 255, 255, 0.2);
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 1)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
   }
   
   .entrance-dot.active {
-    stroke-width: 1;
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+    fill: rgba(255, 255, 255, 0.2);
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 1)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
   }
 }
 
 /* Tablet - dots styling */
 @media (min-width: 429px) and (max-width: 1023px) {
   .project-dot.active {
-    stroke-width: 0.8;
-    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+    fill: rgba(255, 255, 255, 0.2);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 1)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
   }
   
   .entrance-dot.active {
-    stroke-width: 0.8;
-    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+    fill: rgba(255, 255, 255, 0.2);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 1)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
   }
 }
 
 /* Mobile - dots styling */
 @media (max-width: 428px) {
   .project-dot.active {
-    stroke-width: 0.6;
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
+    fill: rgba(255, 255, 255, 0.2);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
   }
   
   .entrance-dot.active {
-    stroke-width: 0.6;
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
+    fill: rgba(255, 255, 255, 0.2);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
   }
 }
 
@@ -548,13 +526,13 @@ body {
 #project-detail-panel {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.85) 550px, rgba(0, 0, 0, 0.3) 100%);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   z-index: 300;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   pointer-events: auto;
@@ -567,15 +545,16 @@ body {
 }
 
 .detail-content {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.95);
   padding: 2.5rem;
   border-radius: 8px;
-  max-width: 600px;
-  max-height: 80vh;
+  width: 500px;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 1rem;
+  margin: 2rem;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .close-button {
@@ -645,7 +624,7 @@ body {
     height: 1600px;
   }
   
-  #map-image-layer {
+  #map-svg {
     width: 1600px; /* Fixed size on very large screens */
     height: 2560px; /* Fixed size on very large screens */
   }
@@ -693,8 +672,9 @@ body {
   }
 
   .detail-content {
-    padding: 3rem;
-    max-width: 700px;
+    padding: 2.5rem;
+    width: 500px;
+    margin: 2rem;
   }
 
   #detail-name {
@@ -732,8 +712,9 @@ body {
   }
 
   .detail-content {
-    padding: 2rem;
-    margin: 0.5rem;
+    padding: 2.5rem;
+    width: 500px;
+    margin: 2rem;
   }
 
   #detail-name {
@@ -785,17 +766,13 @@ body {
     overflow: visible; /* Allow dots to be visible */
   }
 
-  /* Map image layer - ensure it scales to fit mobile viewport */
-  #map-image-layer {
+  /* Map SVG - ensure it scales to fit mobile viewport */
+  #map-svg {
     width: min(100vh, 100vw * 1.6); /* Scale to fit mobile, maintain aspect */
     height: min(100vw, 100vh * 0.625); /* Scale to fit mobile */
-    /* Ensure image doesn't get cut off */
+    /* Ensure SVG doesn't get cut off */
     min-width: 0;
     min-height: 0;
-  }
-
-  /* Overlay should match image layer and allow overflow */
-  #map-overlay {
     overflow: visible; /* Allow dots outside to be visible */
   }
 
@@ -843,8 +820,9 @@ body {
 
   .detail-content {
     padding: 1.5rem;
-    margin: 0.5rem;
-    max-width: calc(100% - 1rem);
+    width: calc(100% - 2rem);
+    max-width: 500px;
+    margin: 1rem;
   }
 
   #detail-name {

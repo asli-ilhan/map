@@ -27,6 +27,19 @@ function getDeviceType() {
 }
 
 // Desktop coordinates (MacBook Air)
+// Offset to adjust dot positions (in SVG coordinate units, applied after coordinate calculation)
+// The SVG is 2858x1380, so offsets are in those units
+// Negative X moves left, positive Y moves down
+// Try larger values: -200 to -500 for X, 100 to 300 for Y
+const DOT_OFFSET_X = -850; // Adjust this: negative = left, positive = right
+const DOT_OFFSET_Y = -740; // Adjust this: positive = down, negative = up
+
+// Fine-tuning for zoom centering (in pixels, in rotated coordinate space)
+// Adjust these if zoom doesn't center perfectly on the dot
+// Note: Due to -90deg rotation, X and Y effects are swapped
+const ZOOM_CENTER_ADJUST_X = 0; // Adjust this: affects vertical position (negative = up, positive = down)
+const ZOOM_CENTER_ADJUST_Y = 0; // Adjust this: affects horizontal position (negative = left, positive = right)
+
 const ENTRANCE_DESKTOP = {
   x: 0.47,
   y: 0.68
@@ -594,9 +607,8 @@ let mapAspectRatio = 1;
 
 const landingScreen = document.getElementById("landing-screen");
 const mapScreen = document.getElementById("map-screen");
-const mapOverlay = document.getElementById("map-overlay");
+const mapSvg = document.getElementById("map-svg");
 const mapInner = document.getElementById("map-inner");
-const mapImageLayer = document.getElementById("map-image-layer");
 const mapContainer = document.getElementById("map-container");
 const studentsList = document.getElementById("students-list");
 const projectDetailPanel = document.getElementById("project-detail-panel");
@@ -664,12 +676,11 @@ function applySafariStyles() {
     mapView.style.setProperty('display', 'none', 'important');
   }
   
-  if (!mapImageLayer || !mapOverlay) return;
+  if (!mapSvg) return;
   
-  // Hide map image and overlay completely
-  mapImageLayer.style.setProperty('display', 'none', 'important');
-  mapOverlay.style.setProperty('display', 'none', 'important');
-  mapOverlay.style.setProperty('visibility', 'hidden', 'important');
+  // Hide SVG completely
+  mapSvg.style.setProperty('display', 'none', 'important');
+  mapSvg.style.setProperty('visibility', 'hidden', 'important');
   
   // Disable transitions on map-inner
   mapInner.style.setProperty('transition', 'none', 'important');
@@ -773,6 +784,16 @@ function transitionToMap() {
   }
   
   // For Chrome/other browsers: Normal map view
+  // Make sure map container and SVG are visible
+  const mapContainer = document.getElementById("map-container");
+  if (mapContainer) {
+    mapContainer.style.display = "";
+  }
+  if (mapSvg) {
+    mapSvg.style.removeProperty('display');
+    mapSvg.style.removeProperty('visibility');
+  }
+  
   // Reset to full map view first
   resetMapView();
   
@@ -789,7 +810,7 @@ function transitionToMap() {
     showYoureHereText();
     // Force Safari transforms after zoom
     setTimeout(forceSafariTransforms, 100);
-  }, 3000);
+  }, 1000);
 }
 
 // ============================================================================
@@ -797,6 +818,8 @@ function transitionToMap() {
 // ============================================================================
 
 function loadMapImage() {
+  if (!mapSvg) return;
+  
   const img = new Image();
   // Use static image for Safari, regular map for other browsers
   img.src = isSafari() ? "/map_static.png" : "/map.png";
@@ -804,11 +827,28 @@ function loadMapImage() {
   img.onload = () => {
     mapImageLoaded = true;
     mapAspectRatio = img.naturalWidth / img.naturalHeight;
+    
+    // Set SVG dimensions to match image
+    const svgWidth = img.naturalWidth;
+    const svgHeight = img.naturalHeight;
+    mapSvg.setAttribute("width", svgWidth);
+    mapSvg.setAttribute("height", svgHeight);
+    mapSvg.setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+    
+    // Embed the image inside the SVG
+    const svgImage = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    svgImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", img.src);
+    svgImage.setAttribute("width", svgWidth);
+    svgImage.setAttribute("height", svgHeight);
+    svgImage.setAttribute("x", 0);
+    svgImage.setAttribute("y", 0);
+    svgImage.setAttribute("id", "map-background-image");
+    
+    // Clear and add image
+    mapSvg.innerHTML = "";
+    mapSvg.appendChild(svgImage);
+    
     renderMap();
-    // Only force transforms for non-Safari (Safari uses static image, no transforms needed)
-    if (!isSafari()) {
-      forceSafariTransforms();
-    }
   };
   
   img.onerror = () => {
@@ -816,61 +856,11 @@ function loadMapImage() {
   };
 }
 
-// Force Safari to apply CSS transforms (workaround for Safari transform issues)
-// Safari-specific: Only rotate overlay +90deg to align dots/paths with rotated map
+// Force Safari to apply CSS transforms (no longer needed with SVG, but kept for compatibility)
 function forceSafariTransforms() {
-  // Check if elements exist
-  if (!mapImageLayer || !mapOverlay) return;
-  
-  // Detect Safari - try multiple methods
-  const ua = navigator.userAgent.toLowerCase();
-  const isSafari = (ua.indexOf('safari') > -1 && ua.indexOf('chrome') === -1) ||
-                   (navigator.vendor && navigator.vendor.indexOf('Apple') > -1);
-  
-  // Only apply JavaScript transforms for Safari
-  if (!isSafari) return;
-  
-  // Ensure elements are visible first
-  mapImageLayer.style.display = '';
-  mapOverlay.style.display = '';
-  mapImageLayer.style.visibility = 'visible';
-  mapOverlay.style.visibility = 'visible';
-  
-  // Safari: Rotate both map and overlay 90deg to the left (-90deg)
-  // Both need to be rotated the same amount to stay aligned
-  const imageTransform = 'translate(-50%, -50%) rotate(-90deg)'; // -90deg (90deg left)
-  const overlayTransform = 'translate(-50%, -50%) rotate(-90deg)'; // -90deg (90deg left)
-  const originValue = '50% 50%';
-  
-  // Set transforms for both image and overlay
-  try {
-    // Image layer
-    mapImageLayer.style.setProperty('-webkit-transform', imageTransform, 'important');
-    mapImageLayer.style.setProperty('transform', imageTransform, 'important');
-    mapImageLayer.style.setProperty('-webkit-transform-origin', originValue, 'important');
-    mapImageLayer.style.setProperty('transform-origin', originValue, 'important');
-    
-    // Overlay
-    mapOverlay.style.setProperty('-webkit-transform', overlayTransform, 'important');
-    mapOverlay.style.setProperty('transform', overlayTransform, 'important');
-    mapOverlay.style.setProperty('-webkit-transform-origin', originValue, 'important');
-    mapOverlay.style.setProperty('transform-origin', originValue, 'important');
-  } catch (e) {
-    // Fallback
-    mapImageLayer.style.webkitTransform = imageTransform;
-    mapImageLayer.style.transform = imageTransform;
-    mapImageLayer.style.webkitTransformOrigin = originValue;
-    mapImageLayer.style.transformOrigin = originValue;
-    
-    mapOverlay.style.webkitTransform = overlayTransform;
-    mapOverlay.style.transform = overlayTransform;
-    mapOverlay.style.webkitTransformOrigin = originValue;
-    mapOverlay.style.transformOrigin = originValue;
-  }
-  
-  // Force reflow to trigger repaint
-  void mapImageLayer.offsetHeight;
-  void mapOverlay.offsetHeight;
+  // With SVG, transforms are applied to map-inner, so this function is no longer needed
+  // But kept for compatibility in case any code still calls it
+  return;
 }
 
 // ============================================================================
@@ -878,14 +868,13 @@ function forceSafariTransforms() {
 // ============================================================================
 
 function renderMap() {
-  if (!mapImageLoaded) return;
+  if (!mapImageLoaded || !mapSvg) return;
   
   // For mobile: Hide map completely, show only legend
   const device = getDeviceType();
   if (device === 'mobile') {
-    mapImageLayer.style.setProperty('display', 'none', 'important');
-    mapOverlay.style.setProperty('display', 'none', 'important');
-    mapOverlay.style.setProperty('visibility', 'hidden', 'important');
+    mapSvg.style.setProperty('display', 'none', 'important');
+    mapSvg.style.setProperty('visibility', 'hidden', 'important');
     return;
   }
   
@@ -895,52 +884,49 @@ function renderMap() {
     return;
   }
   
-  const containerWidth = mapImageLayer.offsetWidth;
-  const containerHeight = mapImageLayer.offsetHeight;
+  // For Chrome/other browsers: Make sure SVG is visible
+  mapSvg.style.removeProperty('display');
+  mapSvg.style.removeProperty('visibility');
   
-  // Calculate overlay dimensions based on aspect ratio
-  let overlayWidth, overlayHeight;
+  // Get SVG dimensions (already set in loadMapImage)
+  const svgWidth = parseFloat(mapSvg.getAttribute("width"));
+  const svgHeight = parseFloat(mapSvg.getAttribute("height"));
   
-  if (containerWidth / containerHeight > mapAspectRatio) {
-    // Container is wider than image aspect ratio
-    overlayHeight = containerHeight;
-    overlayWidth = overlayHeight * mapAspectRatio;
-  } else {
-    // Container is taller than image aspect ratio
-    overlayWidth = containerWidth;
-    overlayHeight = overlayWidth / mapAspectRatio;
+  // Don't clear the image, just remove old markers/paths
+  // Keep the background image, remove everything else
+  const bgImage = mapSvg.querySelector("#map-background-image");
+  if (!bgImage) {
+    // If background image is missing, reload it
+    console.warn("Background image not found, reloading map image...");
+    loadMapImage();
+    return;
   }
   
-  // Set SVG dimensions
-  mapOverlay.setAttribute("width", overlayWidth);
-  mapOverlay.setAttribute("height", overlayHeight);
-  
-  // Clear previous content
-  mapOverlay.innerHTML = "";
+  // Clone the image element before clearing innerHTML
+  const bgImageClone = bgImage.cloneNode(true);
+  mapSvg.innerHTML = "";
+  mapSvg.appendChild(bgImageClone);
   
   // Render entrance marker
-  renderEntranceMarker(overlayWidth, overlayHeight);
+  renderEntranceMarker(svgWidth, svgHeight);
   
   // Render student markers and paths with numbers
   const students = getStudents();
   students.forEach((student, index) => {
-    renderStudentPath(student, overlayWidth, overlayHeight);
-    renderStudentMarker(student, overlayWidth, overlayHeight, index + 1);
+    renderStudentPath(student, svgWidth, svgHeight);
+    renderStudentMarker(student, svgWidth, svgHeight, index + 1);
   });
-  
-  // Force transforms for non-Safari
-  forceSafariTransforms();
 }
 
 function renderEntranceMarker(width, height) {
   const entrance = getEntrance();
-  const pxX = entrance.x * width;
-  const pxY = entrance.y * height;
+  const pxX = entrance.x * width + DOT_OFFSET_X;
+  const pxY = entrance.y * height + DOT_OFFSET_Y;
   const isActive = activeStudentId === "entrance";
   
   // Entrance circle - size varies by device
   const device = getDeviceType();
-  const entranceRadius = device === 'mobile' ? 3 : device === 'tablet' ? 4.5 : 4;
+  const entranceRadius = device === 'mobile' ? 7 : device === 'tablet' ? 10 : 12;
   
   const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   circle.setAttribute("class", `entrance-dot ${isActive ? "active" : ""}`);
@@ -954,7 +940,7 @@ function renderEntranceMarker(width, height) {
     selectEntrance();
   });
   
-  mapOverlay.appendChild(circle);
+  mapSvg.appendChild(circle);
   
   // "You're Here" text label (positioned above the marker)
   // Account for -90° rotation: rotate text +90° so it appears upright after SVG rotation
@@ -967,7 +953,7 @@ function renderEntranceMarker(width, height) {
   label.textContent = "You're Here";
   label.style.opacity = "0";
   label.style.transition = "opacity 0.5s ease";
-  mapOverlay.appendChild(label);
+  mapSvg.appendChild(label);
 }
 
 function renderStudentPath(student, width, height) {
@@ -976,24 +962,24 @@ function renderStudentPath(student, width, height) {
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   const isActive = activeStudentId === student.id;
   
-  let pathData = `M ${student.path[0].x * width} ${student.path[0].y * height}`;
+  let pathData = `M ${student.path[0].x * width + DOT_OFFSET_X} ${student.path[0].y * height + DOT_OFFSET_Y}`;
   for (let i = 1; i < student.path.length; i++) {
-    pathData += ` L ${student.path[i].x * width} ${student.path[i].y * height}`;
+    pathData += ` L ${student.path[i].x * width + DOT_OFFSET_X} ${student.path[i].y * height + DOT_OFFSET_Y}`;
   }
   
   path.setAttribute("d", pathData);
   path.setAttribute("class", `path-line ${isActive ? "active" : ""}`);
-  mapOverlay.appendChild(path);
+  mapSvg.appendChild(path);
 }
 
 function renderStudentMarker(student, width, height, number) {
-  const pxX = student.x * width;
-  const pxY = student.y * height;
+  const pxX = student.x * width + DOT_OFFSET_X;
+  const pxY = student.y * height + DOT_OFFSET_Y;
   const isActive = activeStudentId === student.id;
   
   // Student dot - size varies by device
   const device = getDeviceType();
-  const studentRadius = device === 'mobile' ? 3.5 : device === 'tablet' ? 5.5 : 5;
+  const studentRadius = device === 'mobile' ? 8 : device === 'tablet' ? 11 : 13;
   
   const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   circle.setAttribute("class", `project-dot ${isActive ? "active" : ""}`);
@@ -1006,7 +992,7 @@ function renderStudentMarker(student, width, height, number) {
     selectStudent(student.id);
   });
   
-  mapOverlay.appendChild(circle);
+  mapSvg.appendChild(circle);
   
   // Add number text inside the circle
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -1015,12 +1001,12 @@ function renderStudentMarker(student, width, height, number) {
   text.setAttribute("y", pxY);
   text.textContent = number;
   text.style.pointerEvents = "none";
-  // Adjust font size based on device (smaller sizes)
-  const fontSize = device === 'mobile' ? 5 : device === 'tablet' ? 6 : 7;
+  // Adjust font size based on device (increased sizes)
+  const fontSize = device === 'mobile' ? 8 : device === 'tablet' ? 10 : 12;
   text.setAttribute("font-size", fontSize);
   // Rotate text 90 degrees to the right (clockwise)
   text.setAttribute("transform", `rotate(90 ${pxX} ${pxY})`);
-  mapOverlay.appendChild(text);
+  mapSvg.appendChild(text);
 }
 
 // ============================================================================
@@ -1102,6 +1088,16 @@ function renderLegend() {
 // ============================================================================
 
 function selectEntrance() {
+  // If already focused on entrance and zoomed, don't re-zoom
+  const currentTransform = mapInner.style.transform || "";
+  const isZoomed = currentTransform.includes("scale(") && parseFloat(currentTransform.match(/scale\(([^)]+)\)/)?.[1] || 1) > 1.1;
+  
+  if (activeStudentId === "entrance" && isZoomed) {
+    // Already focused, just show "You're Here" text if needed
+    showYoureHereText();
+    return;
+  }
+  
   activeStudentId = "entrance";
   
   // Update legend
@@ -1148,6 +1144,16 @@ function selectStudent(studentId) {
   // Hide "You're Here" text when viewing student projects
   hideYoureHereText();
   
+  // Check if already focused on this student and zoomed
+  const currentTransform = mapInner.style.transform || "";
+  const isZoomed = currentTransform.includes("scale(") && parseFloat(currentTransform.match(/scale\(([^)]+)\)/)?.[1] || 1) > 1.1;
+  
+  if (activeStudentId === studentId && isZoomed) {
+    // Already focused, just show the detail panel
+    showProjectDetail(student);
+    return;
+  }
+  
   // Re-render map first to ensure marker exists
   renderMap();
   
@@ -1161,132 +1167,183 @@ function selectStudent(studentId) {
   showProjectDetail(student);
 }
 
-// New function: Focus on marker using actual DOM position
+// Focus on marker - comprehensive fix using marker's SVG coordinates
 function focusOnMarker(markerId, zoomLevel = 1.5) {
-  // Find the marker element in the SVG
-  let marker;
-  if (markerId === "entrance") {
-    marker = mapOverlay.querySelector(".entrance-dot");
-  } else {
-    marker = mapOverlay.querySelector(`[data-student-id="${markerId}"]`);
-  }
-  
-  if (!marker) {
-    // Fallback to coordinate-based calculation if marker not found
-    if (markerId === "entrance") {
-      const entrance = getEntrance();
-      focusOnPoint(entrance.x, entrance.y, zoomLevel);
-    } else {
-      const student = getStudents().find(s => s.id === markerId);
-      if (student) {
-        focusOnPoint(student.x, student.y, zoomLevel);
-      }
-    }
+  // For Safari: No zoom/pan (static view)
+  if (isSafari()) {
     return;
   }
   
-  // Get the actual position of the marker after all transforms (including rotation)
-  const svgRect = mapOverlay.getBoundingClientRect();
-  const markerRect = marker.getBoundingClientRect();
+  if (!mapSvg || !mapInner || !mapContainer) return;
   
-  // Calculate marker center position relative to the SVG
-  const markerCenterX = markerRect.left + markerRect.width / 2 - svgRect.left;
-  const markerCenterY = markerRect.top + markerRect.height / 2 - svgRect.top;
-  
-  // Get container dimensions
-  const containerWidth = mapImageLayer.offsetWidth;
-  const containerHeight = mapImageLayer.offsetHeight;
-  const centerX = containerWidth / 2;
-  const centerY = containerHeight / 2;
-  
-  // Get the position of the marker relative to the container
-  const mapContainerRect = mapContainer.getBoundingClientRect();
-  const markerInContainerX = markerRect.left + markerRect.width / 2 - mapContainerRect.left;
-  const markerInContainerY = markerRect.top + markerRect.height / 2 - mapContainerRect.top;
-  
-  // For Safari: No zoom/pan (static view)
-  if (isSafari()) {
-    return; // Don't apply any transforms in Safari
+  // Find the marker element
+  let marker;
+  if (markerId === "entrance") {
+    marker = mapSvg.querySelector(".entrance-dot");
+  } else {
+    marker = mapSvg.querySelector(`[data-student-id="${markerId}"]`);
   }
   
-  // Calculate translation to center the marker
-  const translateX = centerX - markerInContainerX;
-  const translateY = centerY - markerInContainerY;
+  if (!marker) {
+    // Fallback
+    let normalizedX, normalizedY;
+    if (markerId === "entrance") {
+      const entrance = getEntrance();
+      normalizedX = entrance.x;
+      normalizedY = entrance.y;
+    } else {
+      const student = getStudents().find(s => s.id === markerId);
+      if (!student) return;
+      normalizedX = student.x;
+      normalizedY = student.y;
+    }
+    focusOnPoint(normalizedX, normalizedY, zoomLevel);
+    return;
+  }
   
-  // Apply transform
-  mapInner.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
+  // Temporarily disable transition and reset to base state
+  const originalTransition = mapInner.style.transition;
+  const originalTransform = mapInner.style.transform;
+  mapInner.style.transition = "none";
+  mapInner.style.transform = "rotate(-90deg) translate(0, 0) scale(1)";
+  
+  // Force reflow to ensure transform is applied
+  void mapInner.offsetHeight;
+  
+  // Get marker's actual screen position in base state (after rotation, no zoom/pan)
+  const markerRect = marker.getBoundingClientRect();
+  const markerScreenX = markerRect.left + markerRect.width / 2;
+  const markerScreenY = markerRect.top + markerRect.height / 2;
+  
+  // Get container center in screen coordinates
+  const containerRect = mapContainer.getBoundingClientRect();
+  const containerScreenCenterX = containerRect.left + containerRect.width / 2;
+  const containerScreenCenterY = containerRect.top + containerRect.height / 2;
+  
+  // Calculate offset in screen coordinates (how far marker is from container center)
+  const screenOffsetX = containerScreenCenterX - markerScreenX;
+  const screenOffsetY = containerScreenCenterY - markerScreenY;
+  
+  // Get SVG dimensions (viewBox or actual size)
+  const svgWidth = mapSvg.viewBox.baseVal.width || mapSvg.getBoundingClientRect().width;
+  const svgHeight = mapSvg.viewBox.baseVal.height || mapSvg.getBoundingClientRect().height;
+  const svgCenterX = svgWidth / 2;
+  const svgCenterY = svgHeight / 2;
+  
+  // Get marker's position in SVG coordinate space (including offsets)
+  let markerCx, markerCy;
+  if (markerId === "entrance") {
+    const entrance = getEntrance();
+    markerCx = entrance.x * svgWidth + DOT_OFFSET_X;
+    markerCy = entrance.y * svgHeight + DOT_OFFSET_Y;
+  } else {
+    const student = getStudents().find(s => s.id === markerId);
+    if (!student) return;
+    markerCx = student.x * svgWidth + DOT_OFFSET_X;
+    markerCy = student.y * svgHeight + DOT_OFFSET_Y;
+  }
+  
+  // Calculate offset from SVG center
+  const svgOffsetX = markerCx - svgCenterX;
+  const svgOffsetY = markerCy - svgCenterY;
+  
+  // The transform is: scale(z) translate(x, y) rotate(-90deg)
+  // CSS applies right-to-left, so: rotate → translate → scale
+  // After -90deg rotation, coordinates transform: (x, y) → (y, -x)
+  // So to center the marker, we need to translate by the rotated offset
+  // And divide by zoomLevel because translation happens before scaling
+  let translateX = -svgOffsetY / zoomLevel;
+  let translateY = svgOffsetX / zoomLevel;
+  
+  // Apply fine-tuning adjustments
+  translateX += ZOOM_CENTER_ADJUST_X;
+  translateY += ZOOM_CENTER_ADJUST_Y;
+  
+  // Debug logging (add ?debug to URL to see)
+  if (window.location.search.includes('debug')) {
+    console.log('Zoom Calculation:', {
+      markerId,
+      markerScreenX, markerScreenY,
+      containerScreenCenterX, containerScreenCenterY,
+      screenOffsetX, screenOffsetY,
+      translateX, translateY,
+      zoomLevel
+    });
+  }
+  
+  // Re-enable transition
+  mapInner.style.transition = originalTransition;
+  
+  // Apply transform: scale first, then translate, then rotate (CSS applies right-to-left)
+  // This gives us: rotate first (visually), then translate, then scale
+  mapInner.style.transform = `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px) rotate(-90deg)`;
 }
 
-// Keep the old function as fallback
+// Focus on a point using normalized coordinates (0-1 range)
+// This function accounts for the SVG coordinate system, offsets, and rotation
 function focusOnPoint(normalizedX, normalizedY, zoomLevel = 1.5) {
-  const containerWidth = mapImageLayer.offsetWidth;
-  const containerHeight = mapImageLayer.offsetHeight;
-  
-  // Calculate overlay dimensions (unrotated)
-  let overlayWidth, overlayHeight;
-  
-  if (containerWidth / containerHeight > mapAspectRatio) {
-    overlayHeight = containerHeight;
-    overlayWidth = overlayHeight * mapAspectRatio;
-  } else {
-    overlayWidth = containerWidth;
-    overlayHeight = overlayWidth / mapAspectRatio;
-  }
-  
-  // Calculate pixel position in the unrotated coordinate space
-  const targetPxX = normalizedX * overlayWidth;
-  const targetPxY = normalizedY * overlayHeight;
-  
-  // Calculate center of the overlay (unrotated)
-  const overlayCenterX = overlayWidth / 2;
-  const overlayCenterY = overlayHeight / 2;
-  
-  // Transform coordinates for -90° rotation around center
-  // For -90° rotation: (x, y) relative to center → (y, -x) after rotation
-  const relX = targetPxX - overlayCenterX;
-  const relY = targetPxY - overlayCenterY;
-  
-  // Apply rotation transformation
-  // After -90° rotation: (relX, relY) → (relY, -relX)
-  const rotatedRelX = relY;
-  const rotatedRelY = -relX;
-  
-  // Convert back to absolute coordinates in rotated space
-  const rotatedX = overlayCenterX + rotatedRelX;
-  const rotatedY = overlayCenterY + rotatedRelY;
-  
-  // Calculate where the overlay is positioned in the container (centered)
-  const overlayOffsetX = (containerWidth - overlayWidth) / 2;
-  const overlayOffsetY = (containerHeight - overlayHeight) / 2;
-  
-  // Position of the rotated point in container coordinates
-  const pointInContainerX = overlayOffsetX + rotatedX;
-  const pointInContainerY = overlayOffsetY + rotatedY;
-  
-  // Calculate center of container
-  const centerX = containerWidth / 2;
-  const centerY = containerHeight / 2;
-  
   // For Safari: No zoom/pan (static view)
   if (isSafari()) {
     return; // Don't apply any transforms in Safari
   }
   
-  // Calculate translation needed to center the point
-  const translateX = centerX - pointInContainerX;
-  const translateY = centerY - pointInContainerY;
+  if (!mapSvg) return;
   
-  // Apply transform
-  mapInner.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
+  // Get SVG dimensions (internal coordinate system - viewBox)
+  const svgWidth = parseFloat(mapSvg.getAttribute("width"));
+  const svgHeight = parseFloat(mapSvg.getAttribute("height"));
+  
+  // Calculate pixel position in SVG coordinates (with offsets applied)
+  const targetPxX = normalizedX * svgWidth + DOT_OFFSET_X;
+  const targetPxY = normalizedY * svgHeight + DOT_OFFSET_Y;
+  
+  // Get the actual rendered size of the SVG element
+  const svgRect = mapSvg.getBoundingClientRect();
+  const renderedSvgWidth = svgRect.width;
+  const renderedSvgHeight = svgRect.height;
+  
+  // Calculate scale factors (how much the SVG is scaled from viewBox to rendered size)
+  const scaleX = renderedSvgWidth / svgWidth;
+  const scaleY = renderedSvgHeight / svgHeight;
+  
+  // Get container dimensions
+  const containerWidth = mapContainer.offsetWidth;
+  const containerHeight = mapContainer.offsetHeight;
+  const containerCenterX = containerWidth / 2;
+  const containerCenterY = containerHeight / 2;
+  
+  // Convert SVG coordinates to rendered coordinates (before rotation)
+  const renderedX = targetPxX * scaleX;
+  const renderedY = targetPxY * scaleY;
+  
+  // The SVG is centered in the container, so find position relative to SVG center
+  const svgCenterX = renderedSvgWidth / 2;
+  const svgCenterY = renderedSvgHeight / 2;
+  const relX = renderedX - svgCenterX;
+  const relY = renderedY - svgCenterY;
+  
+  // After -90deg rotation on map-inner: (relX, relY) → (relY, -relX)
+  // The SVG is centered at container center, so:
+  const rotatedX = containerCenterX + relY;
+  const rotatedY = containerCenterY - relX;
+  
+  // Calculate translation needed to center the rotated point
+  const translateX = containerCenterX - rotatedX;
+  const translateY = containerCenterY - rotatedY;
+  
+  // Apply transform - combine rotation with translate/scale
+  mapInner.style.transform = `rotate(-90deg) translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
 }
 
 function resetMapView() {
   // For Safari: No transforms (static view)
   if (isSafari()) {
-    mapInner.style.transform = "translate(0, 0) scale(1)";
+    mapInner.style.transform = "rotate(-90deg) translate(0, 0) scale(1)";
     mapInner.style.transition = "none";
   } else {
-    mapInner.style.transform = "translate(0, 0) scale(1)";
+    // Reset to default view with smooth transition
+    mapInner.style.transition = "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
+    mapInner.style.transform = "rotate(-90deg) translate(0, 0) scale(1)";
   }
 }
 
@@ -1334,11 +1391,13 @@ function closeProjectDetail() {
   activeStudentId = null;
   renderLegend();
   
-  // Only reset map view and re-render map if not on mobile or Safari
+  // Reset map view and re-render map if not on mobile or Safari
   const device = getDeviceType();
   const isMobile = device === 'mobile';
   if (!isMobile && !isSafari()) {
+    // Reset zoom/pan to default view
     resetMapView();
+    // Re-render to update active states
     renderMap();
   }
 }
@@ -1358,7 +1417,8 @@ function escapeHtml(text) {
 // ============================================================================
 
 function showYoureHereText() {
-  const label = mapOverlay.querySelector("#youre-here-label");
+  if (!mapSvg) return;
+  const label = mapSvg.querySelector("#youre-here-label");
   if (label) {
     label.style.opacity = "1";
     // Hide after 5 seconds
@@ -1369,7 +1429,8 @@ function showYoureHereText() {
 }
 
 function hideYoureHereText() {
-  const label = mapOverlay.querySelector("#youre-here-label");
+  if (!mapSvg) return;
+  const label = mapSvg.querySelector("#youre-here-label");
   if (label) {
     label.style.opacity = "0";
   }
@@ -1403,8 +1464,8 @@ function showCursorCoordinates(event) {
   }
 
   // Use the exact same calculation as renderMap() to ensure consistency
-  const containerWidth = mapImageLayer.offsetWidth;
-  const containerHeight = mapImageLayer.offsetHeight;
+  const containerWidth = mapContainer.offsetWidth;
+  const containerHeight = mapContainer.offsetHeight;
   
   // Calculate overlay dimensions (unrotated) - same as renderMap
   let overlayWidth, overlayHeight;
