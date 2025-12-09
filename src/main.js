@@ -613,33 +613,46 @@ function init() {
   setupEventListeners();
   loadMapImage();
   renderLegend();
-  renderMap();
   
   // Apply Safari-specific styles if needed
   if (isSafari()) {
-    setTimeout(() => applySafariStyles(), 100);
-    setTimeout(() => applySafariStyles(), 500);
+    applySafariStyles();
+    centerLegendForSafari();
   } else {
+    renderMap();
     // Force Safari transforms after initial render (for non-Safari)
     setTimeout(forceSafariTransforms, 100);
     setTimeout(forceSafariTransforms, 500);
   }
 }
 
-// Apply Safari-specific styles (static image, no rotation, no zoom/pan, no dots/paths)
+// Center legend panel for Safari
+function centerLegendForSafari() {
+  const legendPanel = document.getElementById("legend-panel");
+  if (legendPanel && isSafari()) {
+    legendPanel.style.position = "fixed";
+    legendPanel.style.top = "50%";
+    legendPanel.style.left = "50%";
+    legendPanel.style.transform = "translate(-50%, -50%)";
+    legendPanel.style.maxWidth = "90%";
+    legendPanel.style.width = "auto";
+    legendPanel.style.minWidth = "280px";
+    legendPanel.style.maxHeight = "85vh";
+  }
+}
+
+// Apply Safari-specific styles (hide map completely, show only legend)
 function applySafariStyles() {
+  // Hide map view completely for Safari
+  const mapView = document.getElementById("map-view");
+  if (mapView) {
+    mapView.style.setProperty('display', 'none', 'important');
+  }
+  
   if (!mapImageLayer || !mapOverlay) return;
   
-  // Use static image for Safari
-  mapImageLayer.style.setProperty('background-image', 'url(/map_static.png)', 'important');
-  
-  // Remove rotation from image layer
-  mapImageLayer.style.setProperty('-webkit-transform', 'translate(-50%, -50%)', 'important');
-  mapImageLayer.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
-  mapImageLayer.style.setProperty('width', 'min(100vw, 2560px)', 'important');
-  mapImageLayer.style.setProperty('height', 'min(100vh, 1600px)', 'important');
-  
-  // Hide the overlay completely in Safari (no dots/paths)
+  // Hide map image and overlay completely
+  mapImageLayer.style.setProperty('display', 'none', 'important');
   mapOverlay.style.setProperty('display', 'none', 'important');
   mapOverlay.style.setProperty('visibility', 'hidden', 'important');
   
@@ -676,12 +689,11 @@ function setupEventListeners() {
   // Window resize handler
   window.addEventListener("resize", () => {
     if (currentState === "map") {
-      renderMap();
-      // Apply Safari styles or force transforms based on browser
       if (isSafari()) {
-        setTimeout(() => applySafariStyles(), 100);
-        setTimeout(() => applySafariStyles(), 200);
+        // For Safari: Just re-render legend
+        renderLegend();
       } else {
+        renderMap();
         setTimeout(forceSafariTransforms, 100);
         setTimeout(forceSafariTransforms, 200);
       }
@@ -707,32 +719,59 @@ function transitionToMap() {
   landingScreen.classList.add("hidden");
   mapScreen.classList.remove("hidden");
   
+  const device = getDeviceType();
+  const isMobile = device === 'mobile';
+  
+  // For mobile: Hide map containers, show only centered legend
+  if (isMobile) {
+    const mapContainer = document.getElementById("map-container");
+    if (mapContainer) {
+      mapContainer.style.display = "none";
+    }
+    // Ensure map-view is visible (legend is inside it)
+    const mapView = document.getElementById("map-view");
+    if (mapView) {
+      mapView.style.display = "block";
+    }
+    // Render legend (alphabetically sorted, centered)
+    renderLegend();
+    return;
+  }
+  
+  // For Safari: Hide map containers, show only legend
+  if (isSafari()) {
+    const mapContainer = document.getElementById("map-container");
+    if (mapContainer) {
+      mapContainer.style.display = "none";
+    }
+    // Ensure map-view is visible (legend is inside it)
+    const mapView = document.getElementById("map-view");
+    if (mapView) {
+      mapView.style.display = "block";
+    }
+    // Render legend (alphabetically sorted)
+    renderLegend();
+    return;
+  }
+  
+  // For Chrome/other browsers: Normal map view
   // Reset to full map view first
   resetMapView();
   
   // Render map to ensure markers exist (this uses device-specific coordinates)
   renderMap();
   
-  // For Safari: Apply styles and show entrance after 3 seconds (no auto-zoom)
-  if (isSafari()) {
-    setTimeout(() => applySafariStyles(), 50);
-    setTimeout(() => applySafariStyles(), 200);
-    setTimeout(() => {
-      selectEntrance();
-    }, 3000);
-  } else {
-    // Force Safari transforms when transitioning to map (for non-Safari)
-    setTimeout(forceSafariTransforms, 50);
-    setTimeout(forceSafariTransforms, 200);
-    
-    // After 3 seconds, zoom to entrance - use selectEntrance() same as clicking
-    setTimeout(() => {
-      selectEntrance();
-      showYoureHereText();
-      // Force Safari transforms after zoom
-      setTimeout(forceSafariTransforms, 100);
-    }, 3000);
-  }
+  // Force Safari transforms when transitioning to map (for non-Safari)
+  setTimeout(forceSafariTransforms, 50);
+  setTimeout(forceSafariTransforms, 200);
+  
+  // After 3 seconds, zoom to entrance - use selectEntrance() same as clicking
+  setTimeout(() => {
+    selectEntrance();
+    showYoureHereText();
+    // Force Safari transforms after zoom
+    setTimeout(forceSafariTransforms, 100);
+  }, 3000);
 }
 
 // ============================================================================
@@ -822,6 +861,15 @@ function forceSafariTransforms() {
 
 function renderMap() {
   if (!mapImageLoaded) return;
+  
+  // For mobile: Hide map completely, show only legend
+  const device = getDeviceType();
+  if (device === 'mobile') {
+    mapImageLayer.style.setProperty('display', 'none', 'important');
+    mapOverlay.style.setProperty('display', 'none', 'important');
+    mapOverlay.style.setProperty('visibility', 'hidden', 'important');
+    return;
+  }
   
   // For Safari: Don't render dots/paths, just show the static image
   if (isSafari()) {
@@ -962,16 +1010,35 @@ function renderStudentMarker(student, width, height, number) {
 // ============================================================================
 
 function renderLegend() {
-  // Update entrance item
+  const device = getDeviceType();
+  const isMobile = device === 'mobile';
+  
+  // For mobile and Safari: Hide entrance item, show only students alphabetically
   const entranceItem = document.querySelector(".entrance-item");
   if (entranceItem) {
-    entranceItem.className = `legend-item entrance-item ${activeStudentId === "entrance" ? "active" : ""}`;
+    if (isMobile || isSafari()) {
+      entranceItem.style.display = "none";
+    } else {
+      entranceItem.style.display = "";
+      entranceItem.className = `legend-item entrance-item ${activeStudentId === "entrance" ? "active" : ""}`;
+    }
   }
   
   studentsList.innerHTML = "";
   
   const students = getStudents();
-  students.forEach((student, index) => {
+  
+  // For mobile and Safari: Sort alphabetically by name, otherwise keep original order
+  let sortedStudents = students;
+  if (isMobile || isSafari()) {
+    sortedStudents = [...students].sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+  }
+  
+  sortedStudents.forEach((student, index) => {
     const item = document.createElement("div");
     item.className = `legend-item ${activeStudentId === student.id ? "active" : ""}`;
     item.setAttribute("data-student-id", student.id);
@@ -983,16 +1050,26 @@ function renderLegend() {
       projectText = student.participants.map(p => p.name).join(", ");
     }
     
-    const number = index + 1;
-    item.innerHTML = `
-      <span class="legend-marker student-marker">
-        <span class="legend-number">${number}</span>
-      </span>
-      <span class="legend-text">
-        <span class="student-name">${escapeHtml(student.name)}</span>
-        <span class="student-project">${projectText}</span>
-      </span>
-    `;
+    // For mobile and Safari: Don't show numbers, just show names
+    if (isMobile || isSafari()) {
+      item.innerHTML = `
+        <span class="legend-text">
+          <span class="student-name">${escapeHtml(student.name)}</span>
+          <span class="student-project">${projectText}</span>
+        </span>
+      `;
+    } else {
+      const number = index + 1;
+      item.innerHTML = `
+        <span class="legend-marker student-marker">
+          <span class="legend-number">${number}</span>
+        </span>
+        <span class="legend-text">
+          <span class="student-name">${escapeHtml(student.name)}</span>
+          <span class="student-project">${projectText}</span>
+        </span>
+      `;
+    }
     
     item.addEventListener("click", () => {
       selectStudent(student.id);
@@ -1040,20 +1117,27 @@ function selectStudent(studentId) {
   // Update legend
   renderLegend();
   
+  const device = getDeviceType();
+  const isMobile = device === 'mobile';
+  
+  // For mobile and Safari: Just show popup, no map interaction
+  if (isMobile || isSafari()) {
+    showProjectDetail(student);
+    return;
+  }
+  
+  // For Chrome/other browsers: Normal map interaction
   // Hide "You're Here" text when viewing student projects
   hideYoureHereText();
   
   // Re-render map first to ensure marker exists
   renderMap();
   
-  // For Safari (using static image): No zoom/pan, just show popup
-  if (!isSafari()) {
-    // Focus map on student location using actual marker position
-    // ADJUST ZOOM: Change 2.5 to adjust student zoom level (higher = more zoom)
-    setTimeout(() => {
-      focusOnMarker(studentId, 2.5);
-    }, 50);
-  }
+  // Focus map on student location using actual marker position
+  // ADJUST ZOOM: Change 2.5 to adjust student zoom level (higher = more zoom)
+  setTimeout(() => {
+    focusOnMarker(studentId, 2.5);
+  }, 50);
   
   // Show project detail panel
   showProjectDetail(student);
@@ -1231,8 +1315,14 @@ function closeProjectDetail() {
   projectDetailPanel.classList.add("hidden");
   activeStudentId = null;
   renderLegend();
-  resetMapView();
-  renderMap();
+  
+  // Only reset map view and re-render map if not on mobile or Safari
+  const device = getDeviceType();
+  const isMobile = device === 'mobile';
+  if (!isMobile && !isSafari()) {
+    resetMapView();
+    renderMap();
+  }
 }
 
 // ============================================================================
