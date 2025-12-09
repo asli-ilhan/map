@@ -492,7 +492,7 @@ const STUDENTS_DESKTOP = [
       {
         name: "Bangrui Wang",
         projectTitle: "Personalized Futures: A Mirror of Your Browsing Self",
-        exhibitionType: "Desktop / browserbased (if not working needs to be video)",
+        exhibitionType: "Desktop / browserbased",
         briefHtml: "<p>LocalAI Analyser is a localised personalised recommendation system with \"privacy first\" as the core, which consists of browser plug-ins and local AI back-end. The system will analyse the user's browsing history locally, generate editable interest tags, and provide personalised content recommendations based on this information. Users can freely modify, add or delete tags and fully control their own interest model. All data and analysis are done locally, not relying on the cloud, providing a safer and more controllable personalised experience.</p>",
         timing: ""
       },
