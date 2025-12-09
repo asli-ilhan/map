@@ -726,14 +726,14 @@ function setupEventListeners() {
     }
   });
 
-  // Coordinate display on mouse move (for quick coordinate finding)
-  mapContainer.addEventListener("mousemove", (e) => {
-    showCursorCoordinates(e);
-  });
+  // Coordinate display on mouse move (for quick coordinate finding) - DISABLED
+  // mapContainer.addEventListener("mousemove", (e) => {
+  //   showCursorCoordinates(e);
+  // });
 
-  mapContainer.addEventListener("mouseleave", () => {
-    hideCursorCoordinates();
-  });
+  // mapContainer.addEventListener("mouseleave", () => {
+  //   hideCursorCoordinates();
+  // });
 }
 
 // ============================================================================
