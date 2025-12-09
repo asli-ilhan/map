@@ -525,6 +525,13 @@ function getStudents() {
   return STUDENTS_DESKTOP;
 }
 
+// Detect Safari
+function isSafari() {
+  const ua = navigator.userAgent.toLowerCase();
+  return (ua.indexOf('safari') > -1 && ua.indexOf('chrome') === -1) ||
+         (navigator.vendor && navigator.vendor.indexOf('Apple') > -1);
+}
+
 // ============================================================================
 // STATE MANAGEMENT
 // ============================================================================
@@ -560,6 +567,37 @@ function init() {
   loadMapImage();
   renderLegend();
   renderMap();
+  
+  // Apply Safari-specific styles if needed
+  if (isSafari()) {
+    setTimeout(() => applySafariStyles(), 100);
+    setTimeout(() => applySafariStyles(), 500);
+  } else {
+    // Force Safari transforms after initial render (for non-Safari)
+    setTimeout(forceSafariTransforms, 100);
+    setTimeout(forceSafariTransforms, 500);
+  }
+}
+
+// Apply Safari-specific styles (static image, no rotation, no zoom/pan, no dots/paths)
+function applySafariStyles() {
+  if (!mapImageLayer || !mapOverlay) return;
+  
+  // Use static image for Safari
+  mapImageLayer.style.setProperty('background-image', 'url(/map_static.png)', 'important');
+  
+  // Remove rotation from image layer
+  mapImageLayer.style.setProperty('-webkit-transform', 'translate(-50%, -50%)', 'important');
+  mapImageLayer.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
+  mapImageLayer.style.setProperty('width', 'min(100vw, 2560px)', 'important');
+  mapImageLayer.style.setProperty('height', 'min(100vh, 1600px)', 'important');
+  
+  // Hide the overlay completely in Safari (no dots/paths)
+  mapOverlay.style.setProperty('display', 'none', 'important');
+  mapOverlay.style.setProperty('visibility', 'hidden', 'important');
+  
+  // Disable transitions on map-inner
+  mapInner.style.setProperty('transition', 'none', 'important');
 }
 
 function setupEventListeners() {
@@ -592,8 +630,14 @@ function setupEventListeners() {
   window.addEventListener("resize", () => {
     if (currentState === "map") {
       renderMap();
-      // Force Safari transforms on resize
-      setTimeout(forceSafariTransforms, 100);
+      // Apply Safari styles or force transforms based on browser
+      if (isSafari()) {
+        setTimeout(() => applySafariStyles(), 100);
+        setTimeout(() => applySafariStyles(), 200);
+      } else {
+        setTimeout(forceSafariTransforms, 100);
+        setTimeout(forceSafariTransforms, 200);
+      }
     }
   });
 
@@ -622,11 +666,26 @@ function transitionToMap() {
   // Render map to ensure markers exist (this uses device-specific coordinates)
   renderMap();
   
-  // After 3 seconds, zoom to entrance - use selectEntrance() same as clicking
-  setTimeout(() => {
-    selectEntrance();
-    showYoureHereText();
-  }, 3000);
+  // For Safari: Apply styles and show entrance after 3 seconds (no auto-zoom)
+  if (isSafari()) {
+    setTimeout(() => applySafariStyles(), 50);
+    setTimeout(() => applySafariStyles(), 200);
+    setTimeout(() => {
+      selectEntrance();
+    }, 3000);
+  } else {
+    // Force Safari transforms when transitioning to map (for non-Safari)
+    setTimeout(forceSafariTransforms, 50);
+    setTimeout(forceSafariTransforms, 200);
+    
+    // After 3 seconds, zoom to entrance - use selectEntrance() same as clicking
+    setTimeout(() => {
+      selectEntrance();
+      showYoureHereText();
+      // Force Safari transforms after zoom
+      setTimeout(forceSafariTransforms, 100);
+    }, 3000);
+  }
 }
 
 // ============================================================================
@@ -635,45 +694,79 @@ function transitionToMap() {
 
 function loadMapImage() {
   const img = new Image();
-  img.src = "/map.png";
+  // Use static image for Safari, regular map for other browsers
+  img.src = isSafari() ? "/map_static.png" : "/map.png";
   
   img.onload = () => {
     mapImageLoaded = true;
     mapAspectRatio = img.naturalWidth / img.naturalHeight;
     renderMap();
-    // Force Safari to apply transforms
-    forceSafariTransforms();
+    // Only force transforms for non-Safari (Safari uses static image, no transforms needed)
+    if (!isSafari()) {
+      forceSafariTransforms();
+    }
   };
   
   img.onerror = () => {
-    console.error("Failed to load map image. Please ensure /map.png exists in the public folder.");
+    console.error(`Failed to load map image. Please ensure ${isSafari() ? '/map_static.png' : '/map.png'} exists in the public folder.`);
   };
 }
 
 // Force Safari to apply CSS transforms (workaround for Safari transform issues)
+// Safari-specific: Only rotate overlay +90deg to align dots/paths with rotated map
 function forceSafariTransforms() {
-  // Detect Safari
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  // Check if elements exist
+  if (!mapImageLayer || !mapOverlay) return;
   
-  if (isSafari) {
-    // Force reflow to trigger transform application
-    void mapImageLayer.offsetHeight;
-    void mapOverlay.offsetHeight;
+  // Detect Safari - try multiple methods
+  const ua = navigator.userAgent.toLowerCase();
+  const isSafari = (ua.indexOf('safari') > -1 && ua.indexOf('chrome') === -1) ||
+                   (navigator.vendor && navigator.vendor.indexOf('Apple') > -1);
+  
+  // Only apply JavaScript transforms for Safari
+  if (!isSafari) return;
+  
+  // Ensure elements are visible first
+  mapImageLayer.style.display = '';
+  mapOverlay.style.display = '';
+  mapImageLayer.style.visibility = 'visible';
+  mapOverlay.style.visibility = 'visible';
+  
+  // Safari: Rotate both map and overlay 90deg to the left (-90deg)
+  // Both need to be rotated the same amount to stay aligned
+  const imageTransform = 'translate(-50%, -50%) rotate(-90deg)'; // -90deg (90deg left)
+  const overlayTransform = 'translate(-50%, -50%) rotate(-90deg)'; // -90deg (90deg left)
+  const originValue = '50% 50%';
+  
+  // Set transforms for both image and overlay
+  try {
+    // Image layer
+    mapImageLayer.style.setProperty('-webkit-transform', imageTransform, 'important');
+    mapImageLayer.style.setProperty('transform', imageTransform, 'important');
+    mapImageLayer.style.setProperty('-webkit-transform-origin', originValue, 'important');
+    mapImageLayer.style.setProperty('transform-origin', originValue, 'important');
     
-    // Explicitly set transform via JavaScript as fallback
-    const transformValue = 'translate(-50%, -50%) rotate(-90deg)';
-    mapImageLayer.style.webkitTransform = transformValue;
-    mapImageLayer.style.transform = transformValue;
-    mapOverlay.style.webkitTransform = transformValue;
-    mapOverlay.style.transform = transformValue;
+    // Overlay
+    mapOverlay.style.setProperty('-webkit-transform', overlayTransform, 'important');
+    mapOverlay.style.setProperty('transform', overlayTransform, 'important');
+    mapOverlay.style.setProperty('-webkit-transform-origin', originValue, 'important');
+    mapOverlay.style.setProperty('transform-origin', originValue, 'important');
+  } catch (e) {
+    // Fallback
+    mapImageLayer.style.webkitTransform = imageTransform;
+    mapImageLayer.style.transform = imageTransform;
+    mapImageLayer.style.webkitTransformOrigin = originValue;
+    mapImageLayer.style.transformOrigin = originValue;
     
-    // Force a repaint
-    setTimeout(() => {
-      mapImageLayer.style.display = 'none';
-      void mapImageLayer.offsetHeight;
-      mapImageLayer.style.display = '';
-    }, 10);
+    mapOverlay.style.webkitTransform = overlayTransform;
+    mapOverlay.style.transform = overlayTransform;
+    mapOverlay.style.webkitTransformOrigin = originValue;
+    mapOverlay.style.transformOrigin = originValue;
   }
+  
+  // Force reflow to trigger repaint
+  void mapImageLayer.offsetHeight;
+  void mapOverlay.offsetHeight;
 }
 
 // ============================================================================
@@ -682,6 +775,12 @@ function forceSafariTransforms() {
 
 function renderMap() {
   if (!mapImageLoaded) return;
+  
+  // For Safari: Don't render dots/paths, just show the static image
+  if (isSafari()) {
+    applySafariStyles();
+    return;
+  }
   
   const containerWidth = mapImageLayer.offsetWidth;
   const containerHeight = mapImageLayer.offsetHeight;
@@ -715,7 +814,7 @@ function renderMap() {
     renderStudentMarker(student, overlayWidth, overlayHeight);
   });
   
-  // Force Safari transforms after rendering
+  // Force transforms for non-Safari
   forceSafariTransforms();
 }
 
@@ -850,12 +949,17 @@ function selectEntrance() {
   // Re-render map first to ensure marker exists
   renderMap();
   
-  // Focus map on entrance location using actual marker position
-  // ADJUST ZOOM: Change 2.5 to adjust entrance zoom level (higher = more zoom)
-  setTimeout(() => {
-    focusOnMarker("entrance", 2.5);
+  // For Safari (using static image): No zoom/pan, just show "You're Here" text
+  if (isSafari()) {
     showYoureHereText();
-  }, 50);
+  } else {
+    // Focus map on entrance location using actual marker position
+    // ADJUST ZOOM: Change 2.5 to adjust entrance zoom level (higher = more zoom)
+    setTimeout(() => {
+      focusOnMarker("entrance", 2.5);
+      showYoureHereText();
+    }, 50);
+  }
   
   // Close project detail panel if open
   projectDetailPanel.classList.add("hidden");
@@ -876,11 +980,14 @@ function selectStudent(studentId) {
   // Re-render map first to ensure marker exists
   renderMap();
   
-  // Focus map on student location using actual marker position
-  // ADJUST ZOOM: Change 2.5 to adjust student zoom level (higher = more zoom)
-  setTimeout(() => {
-    focusOnMarker(studentId, 2.5);
-  }, 50);
+  // For Safari (using static image): No zoom/pan, just show popup
+  if (!isSafari()) {
+    // Focus map on student location using actual marker position
+    // ADJUST ZOOM: Change 2.5 to adjust student zoom level (higher = more zoom)
+    setTimeout(() => {
+      focusOnMarker(studentId, 2.5);
+    }, 50);
+  }
   
   // Show project detail panel
   showProjectDetail(student);
@@ -928,6 +1035,11 @@ function focusOnMarker(markerId, zoomLevel = 1.5) {
   const mapContainerRect = mapContainer.getBoundingClientRect();
   const markerInContainerX = markerRect.left + markerRect.width / 2 - mapContainerRect.left;
   const markerInContainerY = markerRect.top + markerRect.height / 2 - mapContainerRect.top;
+  
+  // For Safari: No zoom/pan (static view)
+  if (isSafari()) {
+    return; // Don't apply any transforms in Safari
+  }
   
   // Calculate translation to center the marker
   const translateX = centerX - markerInContainerX;
@@ -987,6 +1099,11 @@ function focusOnPoint(normalizedX, normalizedY, zoomLevel = 1.5) {
   const centerX = containerWidth / 2;
   const centerY = containerHeight / 2;
   
+  // For Safari: No zoom/pan (static view)
+  if (isSafari()) {
+    return; // Don't apply any transforms in Safari
+  }
+  
   // Calculate translation needed to center the point
   const translateX = centerX - pointInContainerX;
   const translateY = centerY - pointInContainerY;
@@ -996,7 +1113,13 @@ function focusOnPoint(normalizedX, normalizedY, zoomLevel = 1.5) {
 }
 
 function resetMapView() {
-  mapInner.style.transform = "translate(0, 0) scale(1)";
+  // For Safari: No transforms (static view)
+  if (isSafari()) {
+    mapInner.style.transform = "translate(0, 0) scale(1)";
+    mapInner.style.transition = "none";
+  } else {
+    mapInner.style.transform = "translate(0, 0) scale(1)";
+  }
 }
 
 // ============================================================================
@@ -1154,5 +1277,22 @@ function hideCursorCoordinates() {
 // START APPLICATION
 // ============================================================================
 
-init();
+// Wait for DOM to be fully ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    init();
+    // Force Safari transforms after DOM is ready
+    setTimeout(forceSafariTransforms, 200);
+  });
+} else {
+  init();
+  // Force Safari transforms immediately if DOM is already ready
+  setTimeout(forceSafariTransforms, 200);
+}
+
+// Also force transforms on window load (after all resources loaded)
+window.addEventListener('load', () => {
+  setTimeout(forceSafariTransforms, 100);
+  setTimeout(forceSafariTransforms, 500);
+});
 

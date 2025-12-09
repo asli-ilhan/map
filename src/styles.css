@@ -192,6 +192,8 @@ body {
   will-change: transform;
 }
 
+/* Safari-specific styles are applied via JavaScript in applySafariStyles() */
+
 #map-overlay {
   position: absolute;
   top: 50%;
