@@ -612,6 +612,7 @@ const detailBrief = document.getElementById("detail-brief");
 function init() {
   setupEventListeners();
   loadMapImage();
+  updateLegendTitle();
   renderLegend();
   
   // Apply Safari-specific styles if needed
@@ -623,6 +624,20 @@ function init() {
     // Force Safari transforms after initial render (for non-Safari)
     setTimeout(forceSafariTransforms, 100);
     setTimeout(forceSafariTransforms, 500);
+  }
+}
+
+// Update legend title based on device
+function updateLegendTitle() {
+  const legendTitle = document.querySelector("#legend-panel h3");
+  if (legendTitle) {
+    const device = getDeviceType();
+    const isMobile = device === 'mobile';
+    if (isMobile || isSafari()) {
+      legendTitle.textContent = "Projects Index;";
+    } else {
+      legendTitle.textContent = "Location Index;";
+    }
   }
 }
 
@@ -718,6 +733,9 @@ function transitionToMap() {
   currentState = "map";
   landingScreen.classList.add("hidden");
   mapScreen.classList.remove("hidden");
+  
+  // Update legend title based on device
+  updateLegendTitle();
   
   const device = getDeviceType();
   const isMobile = device === 'mobile';
