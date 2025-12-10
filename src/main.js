@@ -74,7 +74,7 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s3",
-    name: "Zhenping gao",
+    name: "Zhenping Gao",
     projectTitle: "Time Memory",
     exhibitionType: "Installation",
     briefHtml: "<p>By adopting the research method of practice, during the process of building multi-sensory interactive installations in the experiment, we explore how to restructure human perception of time through the combination of art and technology, and attempt to explore creative methods for immersive experiences and interaction design, searching the balance point between technology and art in Multimodal interaction, how to set up interaction feedback to restructure people's perception of time, the contrast and combination of natural materials and mechanical materials, and other issues.</p>",
@@ -140,7 +140,7 @@ const STUDENTS_DESKTOP = [
   {
     id: "s8",
     name: "Samir Rajesh",
-    projectTitle: "Qollapse",
+    projectTitle: "Qollapse: Towards a Quantum-Inspired Model of Relational Identity in Emergent Simulations",
     exhibitionType: "Installation",
     briefHtml: "<p></p>",
     x: 0.63,
@@ -152,10 +152,10 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s9",
-    name: "Zixuan Wang",
-    projectTitle: "Rhythmic Ruins",
+    name: "Haofei Niu",
+    projectTitle: "FluxID",
     exhibitionType: "Installation",
-    briefHtml: "<p>Robin to add the text from the form</p>",
+    briefHtml: "<p>FluxID is a low-cost, human-centred sensing system designed to help citizen scientists uncover hidden pollution in their local waterways. Built around modular components: a capacitive sensor, a turbine flow meter, and a compact processing unit, the system transforms complex monitoring tasks into an accessible, plug-and-play setup that citizen scientists can deploy with confidence. Every design choice, from adjustable waterproof housings to replaceable clamps and intuitive connectors, prioritises adaptability, repairability, and long-term use in diverse field conditions.  At its core, FluxID is not just a technical solution but a social tool. By turning informal observations into reliable, timestamped evidence, it gives residents, volunteers, and water authorities a shared language for understanding environmental harm. The platform makes discharges visible on a catchment map, helping communities advocate for cleaner rivers and enabling public institutions to respond more proactively. Through thoughtful design and collective ownership of data, FluxID aims to bridge the gap between citizens and environmental governance, supporting a more transparent, empowered, and ecologically responsible future.</p>",
     x: 0.52,
     y: 0.93,
     path: [
@@ -165,19 +165,6 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s10",
-    name: "Jiaxuan Ye",
-    projectTitle: "",
-    exhibitionType: "Installation",
-    briefHtml: "<p>to be removed form the map</p>",
-    x: 0.52,
-    y: 1,
-    path: [
-      { x: ENTRANCE_DESKTOP.x, y: ENTRANCE_DESKTOP.y },
-      { x: 0.52, y: 1 }
-    ]
-  },
-  {
-    id: "s11",
     name: "Chang Li",
     projectTitle: "Archive ZERO",
     exhibitionType: "Performance",
@@ -190,7 +177,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s12",
+    id: "s11",
     name: "Daniel Adelodun",
     projectTitle: "Open Source Tools for Aerial Light Painting",
     exhibitionType: "Installation",
@@ -203,7 +190,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s13",
+    id: "s12",
     name: "Evander Duncan",
     projectTitle: "Tele-Gate",
     exhibitionType: "Installation",
@@ -216,7 +203,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s14",
+    id: "s13",
     name: "Lukmou Natpavee Wanichnatee",
     projectTitle: "Memory Palace",
     exhibitionType: "Installation",
@@ -229,20 +216,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s15",
-    name: "Haofei Niu",
-    projectTitle: "FluxID",
-    exhibitionType: "Installation",
-    briefHtml: "<p>FluxID is a low-cost, human-centred sensing system designed to help citizen scientists uncover hidden pollution in their local waterways. Built around modular components: a capacitive sensor, a turbine flow meter, and a compact processing unit, the system transforms complex monitoring tasks into an accessible, plug-and-play setup that citizen scientists can deploy with confidence. Every design choice, from adjustable waterproof housings to replaceable clamps and intuitive connectors, prioritises adaptability, repairability, and long-term use in diverse field conditions.  At its core, FluxID is not just a technical solution but a social tool. By turning informal observations into reliable, timestamped evidence, it gives residents, volunteers, and water authorities a shared language for understanding environmental harm. The platform makes discharges visible on a catchment map, helping communities advocate for cleaner rivers and enabling public institutions to respond more proactively. Through thoughtful design and collective ownership of data, FluxID aims to bridge the gap between citizens and environmental governance, supporting a more transparent, empowered, and ecologically responsible future.</p>",
-    x: 0.420,
-    y: 0.92,
-    path: [
-      { x: ENTRANCE_DESKTOP.x, y: ENTRANCE_DESKTOP.y },
-      { x: 0.420, y: 0.92 }
-    ]
-  },
-  {
-    id: "s16",
+    id: "s14",
     name: "Suchanan Unhavaithaya",
     projectTitle: "Neuro-Computational Vision: fNIRS generative minds",
     exhibitionType: "Installation",
@@ -255,7 +229,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s17",
+    id: "s15",
     name: "Munirah AlShami",
     projectTitle: "Hang on.",
     exhibitionType: "Installation",
@@ -268,7 +242,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s18",
+    id: "s16",
     name: "Janice Lee",
     projectTitle: "Crying Robot & Human Empathy",
     exhibitionType: "Installation",
@@ -281,7 +255,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s19",
+    id: "s17",
     name: "Chang Shu",
     projectTitle: "From Human Body to Expressive Robots: Designing Movement for Non-Anthropomorphic Robots through Embodied Ideation",
     exhibitionType: "Installation",
@@ -294,7 +268,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s20",
+    id: "s18",
     name: "Hao Liu",
     projectTitle: "Embodied Magnetism - Reconfiguring Movement through Magnetic Force",
     exhibitionType: "Installation",
@@ -307,9 +281,9 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s21",
-    name: "Shuxiang pan",
-    projectTitle: "Kill a Robot",
+    id: "s19",
+    name: "Shuxiang Pan",
+    projectTitle: "Destruction of a Robot",
     exhibitionType: "Performance",
     briefHtml: "<p>By designing an embodied prototype robot and simulating deactivation, this research explores how embodiment-induced empathy shapes emotional attribution and moral concern toward non-moral agents, examining how empathy extends beyond biological life and how future human–robot interactions may redefine moral boundaries.</p>",
     x: 1.05,
@@ -320,7 +294,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s22",
+    id: "s20",
     name: "Shared Video Wall",
     projectTitle: "Shared Video Wall",
     exhibitionType: "Video",
@@ -336,7 +310,7 @@ const STUDENTS_DESKTOP = [
       },
       {
         name: "Samir Rajesh",
-        projectTitle: "Qollapse",
+        projectTitle: "Qollapse: Towards a Quantum-Inspired Model of Relational Identity in Emergent Simulations",
         exhibitionType: "Installation",
         briefHtml: "<p></p>",
         timing: ""
@@ -378,7 +352,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s23",
+    id: "s21",
     name: "JT Liu",
     projectTitle: "nn/mémoire",
     exhibitionType: "Desktop / standalone",
@@ -391,7 +365,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s24",
+    id: "s22",
     name: "Qian Gao",
     projectTitle: "Companion+: Simulating Emotional Optimisation in AI-mediated Intimate Relationships",
     exhibitionType: "Desktop / standalone",
@@ -404,7 +378,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s25",
+    id: "s23",
     name: "Yifan Shen",
     projectTitle: "Synthetic Affect",
     exhibitionType: "Desktop / standalone",
@@ -417,7 +391,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s26",
+    id: "s24",
     name: "Cecilia González Roa",
     projectTitle: "Multispecies Ecologies ",
     exhibitionType: "Desktop / standalone",
@@ -430,7 +404,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s27",
+    id: "s25",
     name: "Portia Summers",
     projectTitle: "Mycelium Dreaming",
     exhibitionType: "Desktop / standalone",
@@ -443,7 +417,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s28",
+    id: "s26",
     name: "Junjie Ma",
     projectTitle: "Blink or Not",
     exhibitionType: "Desktop / standalone",
@@ -456,7 +430,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s29",
+    id: "s27",
     name: "Wei Liao",
     projectTitle: "Loop: Mutual Help",
     exhibitionType: "Desktop / standalone",
@@ -469,7 +443,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s30",
+    id: "s28",
     name: "Joel Falconer",
     projectTitle: "Epoch Zero",
     exhibitionType: "Desktop / standalone",
@@ -482,7 +456,7 @@ const STUDENTS_DESKTOP = [
     ]
   },
   {
-    id: "s31",
+    id: "s29",
     name: "Shared Desktop",
     projectTitle: "Shared Desktop",
     exhibitionType: "Desktop / browserbased",
