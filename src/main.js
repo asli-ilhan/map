@@ -295,31 +295,17 @@ const STUDENTS_DESKTOP = [
   },
   {
     id: "s20",
-    name: "Shared Video Wall",
-    projectTitle: "Shared Video Wall",
+    name: "Shared Wall",
+    projectTitle: "Shared Wall",
     exhibitionType: "Video",
     briefHtml: "<p></p>",
     // Shared space - list all participants with their details
     participants: [
       {
-        name: "Jingyi Wang",
-        projectTitle: "Misread Humour: A Speculative Interface for Algorithmic Visibility",
-        exhibitionType: "Video",
-        briefHtml: "<p>AsiHer is a research-based speculative app that highlights how short-video algorithms misinterpret and suppress East Asian female humor. Unlike Western punchline formats, this humor relies on cultural density, emotional nuance and in-group references that algorithms often classify as low-value or non-humorous. AsiHer analyses user-generated videos across seven dimensions and visualises cultural meaning through a personalized humor report. It also generates structured appeal templates to help creators communicate with platforms. The project critiques algorithmic moderation and proposes a more culturally inclusive digital ecosystem for marginalized creative expressions.</p>",
-        timing: "Epoch Zero"
-      },
-      {
-        name: "Samir Rajesh",
-        projectTitle: "Qollapse: Towards a Quantum-Inspired Model of Relational Identity in Emergent Simulations",
-        exhibitionType: "Installation",
-        briefHtml: "<p></p>",
-        timing: ""
-      },
-      {
-        name: "Shiying Du",
-        projectTitle: "The Distance Between Maps and Wheels",
-        exhibitionType: "Video",
-        briefHtml: "<p>This video focuses on the distance between what navigation apps imagine and the lived experiences of wheelchair travelling. It presents the collision between the map's fantasy of accessibility and the body's reality and reveals the hidden dimensions of wheelchair mobility. The layered Blender model disassembles the hidden physical, emotional, and sensory conditions behind accessible travel, exposing the multiple layers that current apps cannot perceive. It not only wants to reveal the invisible labor of disabled navigation but also offer a new perspective on accessible design, inviting audiences to rethink the possibilities of designing for accessibility.</p>",
+        name: "Chang Li",
+        projectTitle: "Archive Zero",
+        exhibitionType: "Performance",
+        briefHtml: "<p>Archive ZERO is an interactive kinetic sculpture controlled by EEG blink signals. It tells the story of a mechanical shrimp found in a forgotten deep-sea lab. Each blink toggles the creature's movement between calm and active, creating a poetic connection between brain signals and machine life.</p>",
         timing: ""
       },
       {
@@ -330,10 +316,10 @@ const STUDENTS_DESKTOP = [
         timing: ""
       },
       {
-        name: "Xinyi Feng",
-        projectTitle: "Seeing Gaze",
-        exhibitionType: "Video",
-        briefHtml: "<p>This visuality map exposes how Douyin shapes the visibility of women through filters and algorithmic selection. It traces the quiet violence of a feed that decides which bodies rise into view and which sink into obscurity. The work breaks open the habitual gaze that the platform teaches, revealing how beauty is standardised, how desire is coded and how attention is steered. By reorganising the visual field, the map imagines a space where women are not ranked, sorted or optimised for consumption. It invites the viewer to recognise that gaze is a political act and that visibility is never neutral on platform controlled screens.</p>",
+        name: "Samir Rajesh",
+        projectTitle: "Qollapse: Towards a Quantum-Inspired Model of Relational Identity in Emergent Simulations",
+        exhibitionType: "Installation",
+        briefHtml: "<p>This project presents an evolving ecology, one quantum-inspired agent navigates shifting relational identity potentials while classical agents adapt through ongoing encounters. Their interactions generate fluid identities and emergent micro-narratives shaped by the environment. The work explores how selves emerge through relation - how behaviour, relational context, and environmental rhythms continually reconfigure what identity can become.</p>",
         timing: ""
       },
       {
@@ -341,6 +327,20 @@ const STUDENTS_DESKTOP = [
         projectTitle: "Unnatural Presence",
         exhibitionType: "Video",
         briefHtml: "<p>A short experimental film exploring the perceptual sequence within hybrid imagery. Part of a series of digital explorations centred upon the concepts of \"liminal space\" and \"core\" aesthetics.</p>",
+        timing: ""
+      },
+      {
+        name: "Shiying Du",
+        projectTitle: "The Distance Between Maps and Wheels",
+        exhibitionType: "Video",
+        briefHtml: "<p>This project is about the distance between what navigation apps imagine and the lived experiences of wheelchair travelling. It presents the collision between the map's fantasy of accessibility and the body's reality and reveals the hidden dimensions of wheelchair mobility. The layered Blender model disassembles the hidden physical, emotional, and sensory conditions behind accessible travel, exposing the multiple layers that current apps cannot perceive. It not only wants to reveal the invisible labor of disabled navigation but also offer a new perspective on accessible design, inviting audiences to rethink the possibilities of designing for accessibility.</p>",
+        timing: ""
+      },
+      {
+        name: "Xinyi Feng",
+        projectTitle: "Seeing Gaze",
+        exhibitionType: "Video",
+        briefHtml: "<p>This visuality map exposes how Douyin shapes the visibility of women through filters and algorithmic selection. It traces the quiet violence of a feed that decides which bodies rise into view and which sink into obscurity. The work breaks open the habitual gaze that the platform teaches, revealing how beauty is standardised, how desire is coded and how attention is steered. By reorganising the visual field, the map imagines a space where women are not ranked, sorted or optimised for consumption. It invites the viewer to recognise that gaze is a political act and that visibility is never neutral on platform controlled screens.</p>",
         timing: ""
       }
     ],
@@ -482,13 +482,6 @@ const STUDENTS_DESKTOP = [
         projectTitle: "Chat Lab: Does AI change what you want to say?",
         exhibitionType: "Desktop / browserbased",
         briefHtml: "<p>Debate Coach & Wellness Lab is an AI-assisted writing environment that focuses on language rewriting rather than answer generation. Users type short debate responses and receive step-by-step suggestions: grammar fixes, clearer structure, tone adjustments, and side-by-side comparisons between original and rewritten versions. The system supports Chinese–English translation, labels which sentences are \"AI-preferred\", and lets users choose between preserving their own style or aligning with a more standard template.</p>",
-        timing: ""
-      },
-      {
-        name: "Chang Li",
-        projectTitle: "Archive ZERO",
-        exhibitionType: "Performance",
-        briefHtml: "<p>Archive ZERO is an interactive kinetic sculpture controlled by EEG blink signals. It tells the story of a mechanical shrimp found in a forgotten deep-sea lab. Each blink toggles the creature's movement between calm and active, creating a poetic connection between brain signals and machine life.</p>",
         timing: ""
       },
       {
@@ -1006,25 +999,73 @@ function renderLegend() {
   
   const students = getStudents();
   
-  // For mobile and Safari: Sort alphabetically by name, otherwise keep original order
-  let sortedStudents = students;
+  // For mobile and Safari: Expand shared spaces into individual entries, then sort alphabetically
+  let studentsToDisplay = students;
   if (isMobile || isSafari()) {
-    sortedStudents = [...students].sort((a, b) => {
+    // First, collect all participant names from shared spaces to avoid duplicates
+    const participantNames = new Set();
+    students.forEach(student => {
+      if ((student.id === "s29" || student.id === "s20") && student.participants) {
+        student.participants.forEach(participant => {
+          participantNames.add(participant.name.toLowerCase().trim());
+        });
+      }
+    });
+    
+    // Expand shared spaces into individual participant entries
+    const expandedStudents = [];
+    students.forEach(student => {
+      if ((student.id === "s29" || student.id === "s20") && student.participants) {
+        // For shared spaces, add each participant as an individual entry
+        student.participants.forEach(participant => {
+          expandedStudents.push({
+            id: student.id, // Keep the shared space ID for selection
+            name: participant.name,
+            projectTitle: participant.projectTitle,
+            exhibitionType: participant.exhibitionType,
+            briefHtml: participant.briefHtml,
+            isParticipant: true, // Flag to identify this is from a shared space
+            sharedSpaceId: student.id,
+            participantData: participant // Store full participant data
+          });
+        });
+      } else {
+        // Regular student - only add if they're NOT a participant in a shared space
+        const studentNameLower = student.name.toLowerCase().trim();
+        if (!participantNames.has(studentNameLower)) {
+          expandedStudents.push(student);
+        }
+        // If they are a participant, skip them (they'll be shown from the shared space expansion)
+      }
+    });
+    
+    // Sort alphabetically by name
+    studentsToDisplay = expandedStudents.sort((a, b) => {
       const nameA = a.name.toLowerCase();
       const nameB = b.name.toLowerCase();
       return nameA.localeCompare(nameB);
     });
+  } else {
+    // For desktop: Keep original order, just number them
+    studentsToDisplay = students;
   }
   
-  sortedStudents.forEach((student, index) => {
+  studentsToDisplay.forEach((student, index) => {
     const item = document.createElement("div");
-    item.className = `legend-item ${activeStudentId === student.id ? "active" : ""}`;
+    // For participants, check if the shared space is active
+    const isActive = (isMobile || isSafari()) && student.isParticipant 
+      ? activeStudentId === student.sharedSpaceId 
+      : activeStudentId === student.id;
+    item.className = `legend-item ${isActive ? "active" : ""}`;
     item.setAttribute("data-student-id", student.id);
+    if (student.isParticipant) {
+      item.setAttribute("data-participant-name", student.name);
+    }
     
-    // Special handling for shared spaces (s22, s31)
+    // Special handling for shared spaces (s29, s20) - only for desktop
     let projectText = escapeHtml(student.projectTitle);
-    if ((student.id === "s22" || student.id === "s31") && student.participants) {
-      // Show all participant names in legend for shared space
+    if (!isMobile && !isSafari() && (student.id === "s29" || student.id === "s20") && student.participants) {
+      // Show all participant names in legend for shared space (desktop only)
       projectText = student.participants.map(p => p.name).join(", ");
     }
     
@@ -1033,7 +1074,7 @@ function renderLegend() {
       item.innerHTML = `
         <span class="legend-text">
           <span class="student-name">${escapeHtml(student.name)}</span>
-          <span class="student-project">${projectText}</span>
+          <span class="student-project">${escapeHtml(student.projectTitle)}</span>
         </span>
       `;
     } else {
@@ -1050,7 +1091,22 @@ function renderLegend() {
     }
     
     item.addEventListener("click", () => {
-      selectStudent(student.id);
+      // For mobile/Safari: If this is a participant from a shared space, show their individual details
+      if ((isMobile || isSafari()) && student.isParticipant && student.participantData) {
+        // Create a temporary student object with participant data for display
+        const participantStudent = {
+          id: student.sharedSpaceId, // Keep shared space ID for consistency
+          name: student.participantData.name,
+          projectTitle: student.participantData.projectTitle,
+          exhibitionType: student.participantData.exhibitionType,
+          briefHtml: student.participantData.briefHtml
+        };
+        activeStudentId = student.sharedSpaceId;
+        renderLegend();
+        showProjectDetail(participantStudent);
+      } else {
+        selectStudent(student.id);
+      }
     });
     
     studentsList.appendChild(item);
@@ -1326,8 +1382,8 @@ function resetMapView() {
 // ============================================================================
 
 function showProjectDetail(student) {
-  // Special handling for shared spaces (s22, s31)
-  if ((student.id === "s22" || student.id === "s31") && student.participants) {
+    // Special handling for shared spaces (s29, s20)
+    if ((student.id === "s29" || student.id === "s20") && student.participants) {
     detailName.textContent = student.name;
     detailTitle.textContent = ""; // Clear title for shared space
     
