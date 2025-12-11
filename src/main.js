@@ -345,7 +345,7 @@ const STUDENTS_DESKTOP = [
       },
       {
         name: "Jingyi Wang",
-        projectTitle: "Misread Humour: A Speculative Interface for Algorithmic Visibility / Epoch Zero / nn/mémoire",
+        projectTitle: "Misread Humour: A Speculative Interface for Algorithmic Visibility",
         exhibitionType: "Video",
         briefHtml: "<p>AsiHer is a research-based speculative app that highlights how short-video algorithms misinterpret and suppress East Asian female humor. Unlike Western punchline formats, this humor relies on cultural density, emotional nuance and in-group references that algorithms often classify as low-value or non-humorous. AsiHer analyses user-generated videos across seven dimensions and visualises cultural meaning through a personalized humor report. It also generates structured appeal templates to help creators communicate with platforms. The project critiques algorithmic moderation and proposes a more culturally inclusive digital ecosystem for marginalized creative expressions.</p>",
         timing: ""
