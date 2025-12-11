@@ -342,6 +342,13 @@ const STUDENTS_DESKTOP = [
         exhibitionType: "Video",
         briefHtml: "<p>This visuality map exposes how Douyin shapes the visibility of women through filters and algorithmic selection. It traces the quiet violence of a feed that decides which bodies rise into view and which sink into obscurity. The work breaks open the habitual gaze that the platform teaches, revealing how beauty is standardised, how desire is coded and how attention is steered. By reorganising the visual field, the map imagines a space where women are not ranked, sorted or optimised for consumption. It invites the viewer to recognise that gaze is a political act and that visibility is never neutral on platform controlled screens.</p>",
         timing: ""
+      },
+      {
+        name: "Jingyi Wang",
+        projectTitle: "Misread Humour: A Speculative Interface for Algorithmic Visibility / Epoch Zero / nn/mémoire",
+        exhibitionType: "Video",
+        briefHtml: "<p>AsiHer is a research-based speculative app that highlights how short-video algorithms misinterpret and suppress East Asian female humor. Unlike Western punchline formats, this humor relies on cultural density, emotional nuance and in-group references that algorithms often classify as low-value or non-humorous. AsiHer analyses user-generated videos across seven dimensions and visualises cultural meaning through a personalized humor report. It also generates structured appeal templates to help creators communicate with platforms. The project critiques algorithmic moderation and proposes a more culturally inclusive digital ecosystem for marginalized creative expressions.</p>",
+        timing: ""
       }
     ],
     x: 1.155,
