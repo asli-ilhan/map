@@ -897,3 +897,24 @@ body {
   }
 }
 
+/* Credits */
+#map-credits {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  z-index: 300;
+  pointer-events: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@media (max-width: 428px) {
+  #map-credits {
+    font-size: 0.7rem;
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
+}
+
